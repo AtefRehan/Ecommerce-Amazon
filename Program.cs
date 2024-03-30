@@ -3,6 +3,7 @@ using ECommerce.Data;
 using ECommerce.Models;
 using ECommerce.Repositories.Cart_Repository;
 using ECommerce.Repositories.Order_Repository;
+using ECommerce.Repositories.Payment_Repository;
 using ECommerce.Repositories.Product_Repository;
 using ECommerce.Repositories.ProductInCart_Repository;
 using ECommerce.Repositories.SupplierRepository;
@@ -37,6 +38,8 @@ namespace ECommerce
             builder.Services.AddScoped<IProductInCartRepository, ProductInCartRepository>();
             builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
             builder.Services.AddScoped<IWishRepository, WishRepository>();
+            builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+
 
             builder.Services.AddCors(options =>
             {

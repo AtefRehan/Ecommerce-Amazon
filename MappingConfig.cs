@@ -3,6 +3,7 @@ using ECommerce.Data;
 using ECommerce.DTO.Role;
 using ECommerce.DTOS.Cart;
 using ECommerce.DTOS.Order;
+using ECommerce.DTOS.Payment;
 using ECommerce.DTOS.Product;
 using ECommerce.DTOS.ProductInCart;
 using ECommerce.DTOS.Supplier;
@@ -37,6 +38,9 @@ namespace ECommerce
             CreateMap<Product, ChildProductDTO>().ReverseMap();
             CreateMap<SupplierCreateDTO, Supplier>().ReverseMap();
             CreateMap<SupplierUpdateDTO, Supplier>().ReverseMap();
+
+            CreateMap<Payment, PaymentDTO>().ReverseMap();
+            CreateMap<Order, ChildOrderDTO>().ReverseMap();
 
             CreateMap<Order, OrderDTO>().ForMember(o => o.OrderProductsID, src => src.MapFrom(p => p.OrderProducts.Select(id => id.ProductId)));
         }

@@ -12,4 +12,9 @@ public class PaymentRepository:GenericRepository<Payment>,IPaymentRepository
         _context = context;
     }
 
+    //public List<Payment> GetAllPayments()
+    //{
+    //    return _context.payments.Include(a => a.Orders).ToList();
+    //}
+
 }
