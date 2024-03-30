@@ -55,29 +55,29 @@ namespace ECommerce.Controllers
             return NoContent();
         }
         
-        //
-        // [HttpPost]
-        // public IActionResult Create(CategoryWriteDto category)
-        // {
-        //     if (ModelState.IsValid)
-        //     {
-        //         try
-        //         {
-        //             var c = _mapper.Map<Categories>(category);
-        //             c.Id = Guid.NewGuid();
-        //             var parentCategory=parentCategoryRepo.GetById(category.ParentCategoryId);
-        //             c.ParentCategory = parentCategory;
-        //             categoryRepo.Create(c);
-        //             categoryRepo.SaveChanges();
-        //             return Ok(_mapper.Map<CategoryReadDto>(c));
-        //         }
-        //         catch (Exception ex)
-        //         {
-        //             return BadRequest(ex.Message);
-        //         }
-        //     }
-        //     return BadRequest(ModelState);
-        // }
+        
+        [HttpPost]
+        public IActionResult Create(SubCategoryWriteDto subCategoryDto)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var subCategory = _mapper.Map<SubCategory>(subCategoryDto);
+                    // c.Id = Guid.NewGuid();
+                    var category = _categoryRepository.GetById(subCategoryDto.CategoryId);
+                    subCategory.Category = category;
+                    _subCategoryRepository.Create(subCategory);
+                    _subCategoryRepository.SaveChanges();
+                    return Ok(_mapper.Map<SubCategoryReadDto>(subCategory));
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            return BadRequest(ModelState);
+        }
 
         
         
