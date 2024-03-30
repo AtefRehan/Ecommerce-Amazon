@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Ecommerce_Amazon.Migrations
+namespace ECommerce.Migrations
 {
     [DbContext(typeof(AmazonDB))]
     [Migration("20240329225051_Initial")]
