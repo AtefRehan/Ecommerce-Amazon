@@ -31,11 +31,29 @@ public class SupplierRepository:GenericRepository<Supplier>, ISupplierRepository
         _context.Suppliers.Add(supplier);
         SaveChanges();
     }
+    //public void DeleteSupplierById(int id)
+    //{
+    //    var supplier = _context.Suppliers.Include(p => p.Products).FirstOrDefault(p => p.SupplierId == id);
+
+    //    _context.Suppliers.Remove(supplier);
+    //    _context.SaveChanges();
+    //}
     public void DeleteSupplierById(int id)
     {
-        var supplier = _context.Suppliers.Find(id);
+        var supplier = _context.Suppliers.Include(p => p.Products).FirstOrDefault(p => p.SupplierId == id);
 
-        _context.Suppliers.Remove(supplier);
-        _context.SaveChanges();
+        if (supplier != null)
+        {
+            foreach (var product in supplier.Products)
+            {
+                var productsInCarts = _context.ProductInCart.Where(p => p.ProductId == product.ProductId).ToList();
+                _context.ProductInCart.RemoveRange(productsInCarts);
+            }
+
+            _context.Products.RemoveRange(supplier.Products);
+
+            _context.Suppliers.Remove(supplier);
+            _context.SaveChanges();
+        }
     }
 }
