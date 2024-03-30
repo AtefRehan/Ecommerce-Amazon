@@ -6,4 +6,4 @@ namespace ECommerce.DTO
         public int Id { get; init; }
         //public virtual ApplicationUser ApplicationUser { get; init; }
     }
-}
+}       
