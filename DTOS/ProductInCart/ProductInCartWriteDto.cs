@@ -6,6 +6,6 @@ namespace ECommerce.DTOS.ProductInCart
     {
         public int ProductId { get; init; }
         public int CartId { get; init; }
-        public int? Quantity { get; init; }
+        public int Quantity { get; init; }
     }
 }
