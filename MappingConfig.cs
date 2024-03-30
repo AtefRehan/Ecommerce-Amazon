@@ -3,6 +3,7 @@ using ECommerce.Data;
 using ECommerce.DTO.Role;
 using ECommerce.DTOS.Cart;
 using ECommerce.DTOS.Order;
+using ECommerce.DTOS.Payment;
 using ECommerce.DTOS.Product;
 using ECommerce.DTOS.ProductInCart;
 using ECommerce.DTOS.Supplier;
@@ -12,17 +13,20 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ECommerce
 {
-    public class MappingConfig:Profile
+    public class MappingConfig : Profile
     {
-        public MappingConfig() 
+        public MappingConfig()
         {
             CreateMap<Product, ProductDTO>();
             CreateMap<Product, ProductDetailsDTO>();
             CreateMap<ProductCreateDTO, Product>();
             CreateMap<ProductUpdateDTO, Product>();
 
-            CreateMap<Cart, CartDto>().ReverseMap();
+
             CreateMap<ChildProductInCartDto, ProductInCart>().ReverseMap();
+            CreateMap<ProductInCartWriteDto, ProductInCart>().ReverseMap();
+            CreateMap<ProductInCartReadDto, ProductInCart>().ReverseMap();
+            
             
 
             CreateMap<ChildApplicationUserDto, ApplicationUser>().ReverseMap();
@@ -31,6 +35,9 @@ namespace ECommerce
             CreateMap<CartCreateDto, Cart>().ReverseMap();
             CreateMap<IdentityRole, RoleDTO>();
 
+            CreateMap<Cart, CartDto>().ReverseMap();
+            CreateMap<CartUpdateDto, Cart>().ReverseMap();
+            CreateMap<CartCreateDto, Cart>().ReverseMap();
 
 
             CreateMap<Supplier, SupplierDTO>().ReverseMap();
@@ -38,13 +45,18 @@ namespace ECommerce
             CreateMap<SupplierCreateDTO, Supplier>().ReverseMap();
             CreateMap<SupplierUpdateDTO, Supplier>().ReverseMap();
 
-            CreateMap<Order, OrderDTO>().ForMember(o => o.OrderProductsID, src => src.MapFrom(p => p.OrderProducts.Select(id => id.ProductId)));
+            CreateMap<Payment, PaymentDTO>().ReverseMap();
+            CreateMap<Order, ChildOrderDTO>().ReverseMap();
+
+            CreateMap<Order, OrderDTO>().ForMember(o => o.OrderProductsID,
+                src => src.MapFrom(p => p.OrderProducts.Select(id => id.ProductId)));
         }
-       private AmazonDB dbContext;
+
+        private AmazonDB dbContext;
+
         public MappingConfig(AmazonDB _dbcontext)
         {
             this.dbContext = _dbcontext;
         }
-
-        }
+    }
 }

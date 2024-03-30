@@ -8,7 +8,7 @@ namespace ECommerce.DTOS.Cart;
 public record CartDto
 {
     public int CartId { get; set; }
-    public ChildApplicationUserDto ApplicationUser { get; init; }
+    // public ChildApplicationUserDto ApplicationUser { get; init; }
     public Collection<ChildProductInCartDto> ProductsInCart { get; set; }
     
 }
