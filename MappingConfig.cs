@@ -49,6 +49,7 @@ namespace ECommerce
 
 
             CreateMap<Payment, PaymentDTO>().ReverseMap();
+            CreateMap<PaymentCreateDTO, Payment>().ReverseMap();
             CreateMap<Order, ChildOrderDTO>().ReverseMap();
 
             CreateMap<Order, OrderDTO>().ForMember(o => o.OrderProductsID,

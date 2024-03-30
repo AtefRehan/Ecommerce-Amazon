@@ -26,5 +26,11 @@ public class PaymentRepository:GenericRepository<Payment>,IPaymentRepository
                        .FirstOrDefault(p => p.PaymentId == id);
     }
 
+    public void Create(Payment payment)
+    {
+        _context.Payment.Add(payment);
+        SaveChanges();
+    }
+
 
 }

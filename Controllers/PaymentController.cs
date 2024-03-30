@@ -47,5 +47,27 @@ namespace ECommerce.Controllers
             }
             return Ok(mapper.Map<PaymentDTO>(payment));
         }
+
+        [HttpPost]
+        public async Task<ActionResult> Add(PaymentCreateDTO p)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var payment = mapper.Map<Payment>(p);
+                    paymentRepo.Create(payment);
+                    paymentRepo.SaveChanges();
+                    return CreatedAtAction("GetById", new { id = payment.PaymentId }, p);
+
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            return BadRequest(ModelState);
+
+        }
     }
 }
