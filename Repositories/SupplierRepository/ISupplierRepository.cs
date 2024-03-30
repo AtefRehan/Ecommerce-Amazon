@@ -7,6 +7,8 @@ public interface ISupplierRepository : IGenericRepository<Supplier>
 {
     public List<Supplier> GetAllSuppliers();
     public Supplier GetAllSuppliersById(int id);
+    public void Create(Supplier supplier);
+
     public void DeleteSupplierById(int id);
 
 

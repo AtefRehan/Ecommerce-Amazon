@@ -25,7 +25,7 @@ namespace ECommerce
             CreateMap<ProductUpdateDTO, Product>();
 
 
-            CreateMap<ChildProductInCartDto, ProductInCart>().ReverseMap();
+
             CreateMap<ProductInCartWriteDto, ProductInCart>().ReverseMap();
             CreateMap<ProductInCartReadDto, ProductInCart>().ReverseMap();
 
@@ -51,8 +51,14 @@ namespace ECommerce
             CreateMap<SupplierCreateDTO, Supplier>().ReverseMap();
             CreateMap<SupplierUpdateDTO, Supplier>().ReverseMap();
 
+
             CreateMap<Payment, PaymentDTO>().ReverseMap();
+            CreateMap<PaymentCreateDTO, Payment>().ReverseMap();
             CreateMap<Order, ChildOrderDTO>().ReverseMap();
+
+            CreateMap<SubCategoryChildReadDTO , SubCategory>().ReverseMap();
+            CreateMap<CategoryReadDTO, Category>().ReverseMap();
+
 
             CreateMap<Order, OrderDTO>().ForMember(o => o.OrderProductsID,
                 src => src.MapFrom(p => p.OrderProducts.Select(id => id.ProductId)));
