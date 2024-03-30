@@ -7,6 +7,7 @@ using ECommerce.Repositories.SupplierRepository;
 using Microsoft.AspNetCore.Mvc;
 using ECommerce.DTOS;
 using ECommerce.DTOS.Payment;
+using ECommerce.Models;
 
 namespace ECommerce.Controllers
 {
@@ -24,16 +25,49 @@ namespace ECommerce.Controllers
             orderRepo = _orderRepository;
             mapper = _mapper;
         }
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<PaymentDTO>>> GetAll()
-        //{
-        //    List<PaymentDTO> payments = new List<PaymentDTO>();
-        //    foreach (var item in paymentRepo.GetAllPayments())
-        //    {
-        //        PaymentDTO s = mapper.Map<PaymentDTO>(item);
-        //        payments.Add(s);
-        //    }
-        //    return Ok(payments);
-        //}
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PaymentDTO>>> GetAll()
+        {
+            List<PaymentDTO> payments = new List<PaymentDTO>();
+            foreach (var item in paymentRepo.GetAllPayments())
+            {
+                PaymentDTO s = mapper.Map<PaymentDTO>(item);
+                payments.Add(s);
+            }
+            return Ok(payments);
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<PaymentDTO> GetById(int id)
+        {
+            Payment payment = paymentRepo.GetAllPaymentsById(id);
+            if (payment == null)
+            {
+                return NotFound();
+            }
+            return Ok(mapper.Map<PaymentDTO>(payment));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Add(PaymentCreateDTO p)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var payment = mapper.Map<Payment>(p);
+                    paymentRepo.Create(payment);
+                    paymentRepo.SaveChanges();
+                    return CreatedAtAction("GetById", new { id = payment.PaymentId }, p);
+
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            return BadRequest(ModelState);
+
+        }
     }
 }

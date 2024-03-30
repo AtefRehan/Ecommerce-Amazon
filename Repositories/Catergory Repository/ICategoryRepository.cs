@@ -5,5 +5,7 @@ namespace ECommerce.Repositories.Catergory_Repository;
 
 public interface ICategoryRepository : IGenericRepository<Category>
 {
-    
+    public List<Category> GetAllCategories();
+
+
 }
