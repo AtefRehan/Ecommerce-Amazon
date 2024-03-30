@@ -1,4 +1,6 @@
 using AutoMapper;
+using ECommerce.DTOS.ProductInCart;
+using ECommerce.Models;
 using ECommerce.Repositories.Cart_Repository;
 using ECommerce.Repositories.Product_Repository;
 using ECommerce.Repositories.ProductInCart_Repository;
@@ -27,7 +29,34 @@ namespace ECommerce.Controllers
         
         
         
-        
+        [HttpPost]
+        public IActionResult Create(ProductInCartWriteDto productInCart)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var p = _mapper.Map<ProductInCart>(productInCart);
+
+                    // p.Id = p.Id + 5;
+                    var product = _productRepo.GetById(productInCart.ProductId);
+                   
+                    var cart = _cartRepo.GetById(productInCart.CartId);
+                    p.Product = product;
+                    p.Cart = cart;
+                    p.Quantity=1;
+
+                    _productInCartRepo.Create(p);
+                    _productInCartRepo.SaveChanges();
+                    return Ok(_mapper.Map<ProductInCartReadDto>(p));
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            return BadRequest(ModelState);
+        }
         
         
         

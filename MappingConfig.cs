@@ -13,9 +13,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ECommerce
 {
-    public class MappingConfig:Profile
+    public class MappingConfig : Profile
     {
-        public MappingConfig() 
+        public MappingConfig()
         {
             CreateMap<Product, ProductDTO>();
             CreateMap<Product, ProductDetailsDTO>();
@@ -24,6 +24,9 @@ namespace ECommerce
 
 
             CreateMap<ChildProductInCartDto, ProductInCart>().ReverseMap();
+            CreateMap<ProductInCartWriteDto, ProductInCart>().ReverseMap();
+            CreateMap<ProductInCartReadDto, ProductInCart>().ReverseMap();
+            
             
 
             CreateMap<ChildApplicationUserDto, ApplicationUser>().ReverseMap();
@@ -45,13 +48,15 @@ namespace ECommerce
             CreateMap<Payment, PaymentDTO>().ReverseMap();
             CreateMap<Order, ChildOrderDTO>().ReverseMap();
 
-            CreateMap<Order, OrderDTO>().ForMember(o => o.OrderProductsID, src => src.MapFrom(p => p.OrderProducts.Select(id => id.ProductId)));
+            CreateMap<Order, OrderDTO>().ForMember(o => o.OrderProductsID,
+                src => src.MapFrom(p => p.OrderProducts.Select(id => id.ProductId)));
         }
-       private AmazonDB dbContext;
+
+        private AmazonDB dbContext;
+
         public MappingConfig(AmazonDB _dbcontext)
         {
             this.dbContext = _dbcontext;
         }
-
-        }
+    }
 }
