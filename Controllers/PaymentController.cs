@@ -7,6 +7,7 @@ using ECommerce.Repositories.SupplierRepository;
 using Microsoft.AspNetCore.Mvc;
 using ECommerce.DTOS;
 using ECommerce.DTOS.Payment;
+using ECommerce.Models;
 
 namespace ECommerce.Controllers
 {
@@ -34,6 +35,17 @@ namespace ECommerce.Controllers
                 payments.Add(s);
             }
             return Ok(payments);
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<PaymentDTO> GetById(int id)
+        {
+            Payment payment = paymentRepo.GetAllPaymentsById(id);
+            if (payment == null)
+            {
+                return NotFound();
+            }
+            return Ok(mapper.Map<PaymentDTO>(payment));
         }
     }
 }

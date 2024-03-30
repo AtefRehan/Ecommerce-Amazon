@@ -2,10 +2,12 @@
 using ECommerce.Data;
 using ECommerce.DTO.Role;
 using ECommerce.DTOS.Cart;
+using ECommerce.DTOS.Category;
 using ECommerce.DTOS.Order;
 using ECommerce.DTOS.Payment;
 using ECommerce.DTOS.Product;
 using ECommerce.DTOS.ProductInCart;
+using ECommerce.DTOS.SubCategory;
 using ECommerce.DTOS.Supplier;
 using ECommerce.DTOS.User;
 using ECommerce.Models;
@@ -23,7 +25,7 @@ namespace ECommerce
             CreateMap<ProductUpdateDTO, Product>();
 
 
-            CreateMap<ChildProductInCartDto, ProductInCart>().ReverseMap();
+
             CreateMap<ProductInCartWriteDto, ProductInCart>().ReverseMap();
             CreateMap<ProductInCartReadDto, ProductInCart>().ReverseMap();
             
@@ -44,6 +46,7 @@ namespace ECommerce
             CreateMap<Product, ChildProductDTO>().ReverseMap();
             CreateMap<SupplierCreateDTO, Supplier>().ReverseMap();
             CreateMap<SupplierUpdateDTO, Supplier>().ReverseMap();
+
 
             CreateMap<Payment, PaymentDTO>().ReverseMap();
             CreateMap<Order, ChildOrderDTO>().ReverseMap();
