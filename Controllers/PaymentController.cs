@@ -40,12 +40,12 @@ namespace ECommerce.Controllers
         [HttpGet("{id}")]
         public ActionResult<PaymentDTO> GetById(int id)
         {
-            Payment payment = paymentRepo.GetAllPaymensById(id);
+            Payment payment = paymentRepo.GetAllPaymentsById(id);
             if (payment == null)
             {
                 return NotFound();
             }
-            return Ok(mapper.Map<PaymentRepository>(payment));
+            return Ok(mapper.Map<PaymentDTO>(payment));
         }
     }
 }
