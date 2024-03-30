@@ -50,52 +50,77 @@ namespace ECommerce.Controllers
         [HttpPost]
         public async Task<ActionResult> Add(SupplierCreateDTO s)
         {
-            if (s == null)
+            //if (s == null)
+            //{
+            //    return NotFound();
+            //}
+            if (ModelState.IsValid)
             {
-                return NotFound();
-            }
-            if (!ModelState.IsValid)
-                return NotFound();
-            else
-            {
-                var supplier = mapper.Map<Supplier>(s);
-                supplierRepo.Create(supplier);
-                supplierRepo.SaveChanges();
-                return CreatedAtAction("GetById", new { id = supplier.SupplierId }, s);
+                try
+                {
+                    var supplier = mapper.Map<Supplier>(s);
+                    supplierRepo.Create(supplier);
+                    supplierRepo.SaveChanges();
+                    return CreatedAtAction("GetById", new { id = supplier.SupplierId }, s);
 
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
+            return BadRequest(ModelState);
+
         }
 
-        //////////////////// add product to update
-        
         [HttpPut("{id}")]
-        public IActionResult Update(int id, SupplierUpdateDTO supplier)
+        public IActionResult Update(int id, SupplierUpdateDTO supplierDTO)
         {
             if (ModelState.IsValid)
             {
-                if (supplier.supplierId != id)
+                if (supplierDTO.supplierId != id)
                 {
                     return BadRequest();
                 }
+                try
+                {
                     var supplierToEdit = supplierRepo.GetById(id);
-                    if (supplierToEdit is null)
+                    if (supplierToEdit == null)
                     {
                         return NotFound();
                     }
-                    mapper.Map(supplier, supplierToEdit);
+
+                    mapper.Map(supplierDTO, supplierToEdit);
+
+
+                    foreach (var productId in supplierDTO.ProductsId)
+                    {
+                        var product = productRepo.GetProductById(productId);
+                        if (product != null)
+                        {
+                            if (!supplierToEdit.Products.Contains(product))
+                            {
+                                supplierToEdit.Products.Add(product);
+                            }
+                        }
+                    }
+
                     supplierRepo.Update(supplierToEdit);
                     supplierRepo.SaveChanges();
                     return Ok(mapper.Map<SupplierDTO>(supplierToEdit));
-                
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
             return BadRequest(ModelState);
         }
-        //test product
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             supplierRepo.DeleteSupplierById(id);
-
             return Ok();
         }
 

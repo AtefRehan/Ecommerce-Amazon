@@ -28,6 +28,7 @@ namespace ECommerce
             builder.Services.AddDbContext<AmazonDB>(option =>
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("IsraaSQLConnection"));
+
             });
             builder.Services.AddAutoMapper(typeof(MappingConfig));
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
