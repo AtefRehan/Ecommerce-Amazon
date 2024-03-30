@@ -1,10 +1,12 @@
 using ECommerce.Data;
+using ECommerce.Models;
 using ECommerce.Repositories.Generic_Repository;
 using ECommerce.Repositories.Product_Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Repositories.SubCategory_Repository;
 
-public class SubCategoryRepository : GenericRepository<SubCategoryRepository>, ISubCategoryRepository
+public class SubCategoryRepository : GenericRepository<SubCategory>, ISubCategoryRepository
 {
     private readonly AmazonDB _context;
     // private readonly IProductRepository _productRepo;
@@ -13,6 +15,18 @@ public class SubCategoryRepository : GenericRepository<SubCategoryRepository>, I
     {
         // this._productRepo = productRepo;
         _context = context;
+    }
+    
+    public List<SubCategory> GetAll()
+    {
+        return _context.SubCategories.Include(c=>c.Category)
+            .Include(c=>c.Products).ToList();
+    }
+
+    public SubCategory GetById(int id)
+    {
+        return  _context.SubCategories.Include(c => c.Category).Include(c => c.Products)
+            .FirstOrDefault(c => c.SubCategoryId == id);
     }
 
     public void DeleteSubCategoriesByCategoryId(int categoryId)

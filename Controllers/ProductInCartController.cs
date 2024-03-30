@@ -77,7 +77,7 @@ namespace ECommerce.Controllers
                     var deletedproductInCart=_productInCartRepo.GetById(id);
                     _productInCartRepo.Delete(id);
                     _productInCartRepo.SaveChanges();
-                    return NotFound();
+                    return NoContent();
 
                 }
                 catch (Exception ex)

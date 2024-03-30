@@ -28,9 +28,13 @@ namespace ECommerce
 
             CreateMap<ProductInCartWriteDto, ProductInCart>().ReverseMap();
             CreateMap<ProductInCartReadDto, ProductInCart>().ReverseMap();
-            
-            
 
+
+            CreateMap<SubCategory, SubCategoryReadDto>().ReverseMap();
+            CreateMap<SubCategory, SubCategoryWriteDto>().ReverseMap();
+            CreateMap<Category, ChildCategoryReadDto>().ReverseMap();
+                    
+    
             CreateMap<ChildApplicationUserDto, ApplicationUser>().ReverseMap();
 
             CreateMap<CartUpdateDto, Cart>().ReverseMap();

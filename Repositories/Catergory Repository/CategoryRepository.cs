@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Repositories.Catergory_Repository;
 
-public class CategoryRepository : GenericRepository<CategoryRepository> , ICategoryRepository
+public class CategoryRepository : GenericRepository<Category> , ICategoryRepository
 {
     private readonly AmazonDB _context;
 

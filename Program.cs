@@ -8,6 +8,7 @@ using ECommerce.Repositories.Payment_Repository;
 using ECommerce.Repositories.Product_Repository;
 using ECommerce.Repositories.ProductInCart_Repository;
 using ECommerce.Repositories.Role;
+
 using ECommerce.Repositories.SubCategory_Repository;
 using ECommerce.Repositories.SupplierRepository;
 using ECommerce.Repositories.Wish_Repository;
@@ -43,7 +44,12 @@ namespace ECommerce
             builder.Services.AddScoped<IWishRepository, WishRepository>();
             builder.Services.AddScoped<IRoleRepository, RoleRepository>();
             builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
-            builder.Services.AddScoped<ICategoryRepository , CategoryRepository>();
+
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
+
+
+
 
 
             builder.Services.AddCors(options =>
