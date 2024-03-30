@@ -4,8 +4,10 @@ namespace ECommerce.Repositories.Role
 {
     public interface IRoleRepository
     {
-         Task ImportRoles();
-         Task<IdentityResult> ToggleAdminRole(string userId);
+        Task ImportRoles();
+        Task<bool> IsAdmin(string userId);
+        Task<bool> AddAdmin(string userId);
+        Task<bool> RemoveAdmin(string userId);
 
 
     }
