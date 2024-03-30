@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Data;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using ECommerce.Models;
 using ECommerce.Data;
+using ECommerce.Repositories.Role;
 
 namespace ECommerce.Controllers
 {
@@ -16,132 +19,40 @@ namespace ECommerce.Controllers
     //[Authorize(Roles = "Admin")]
     public class RoleController : ControllerBase
     {
-        private readonly AmazonDB dbContext;
-
         private readonly RoleManager<IdentityRole> roleManager;
-        private readonly UserManager<ApplicationUser> userManager;
-
+        private readonly IRoleRepository roleRepository;
         private readonly IMapper mapper;
-        public RoleController(RoleManager<IdentityRole> _roleManager,AmazonDB _dbContext, UserManager<ApplicationUser> _userManager,IMapper  _mapper)
-        {
-            this.dbContext = _dbContext;
 
+        public RoleController(RoleManager<IdentityRole> _roleManager,  IMapper _mapper, IRoleRepository _roleRepository)
+        {
+            this.roleRepository = _roleRepository;
             this.roleManager = _roleManager;
-            this.userManager = _userManager;
             this.mapper = _mapper;
-
-        }
-
-        [HttpPost]
-        [Route("Role")]
-        public async Task<IActionResult> AddRole(RoleDTO roleDTO)
-        {
-            if (ModelState.IsValid)
-            {
-                IdentityRole role = new IdentityRole();
-                role.Name = roleDTO.Name;
-                IdentityResult identityResult = await roleManager.CreateAsync(role);
-                if (identityResult.Succeeded)
-                {
-                    return Created();
-                }
-                return BadRequest(identityResult.Errors.FirstOrDefault()?.Description);
-            }
-            return BadRequest(ModelState);
-
-        }
-
-        [HttpPost]
-        [Route("AddRole")]
-        public async Task<IActionResult> AddRoleToUser(RoleUserDTO userRole)
-        {
-            if (userRole == null )
-            {
-                return BadRequest("Invalid user or role.");
-            }
-            IdentityRole role;
-            ApplicationUser user;
-            try
-            {
-              role = await roleManager.FindByIdAsync(userRole.roleId);
-
-                if (role == null)
-                {
-                    role = await roleManager.FindByNameAsync(userRole.roleName);
-                   
-                }
-            }
-            catch (Exception ex) { return BadRequest("Role not found."); }
-
-            if (userRole == null)
-            {
-                return BadRequest("Invalid user or role.");
-            }
-            // Find the user
-            try
-            {
-                user = await userManager.FindByIdAsync(userRole.UserId);
-                if (user == null)
-                {
-                    user = await userManager.FindByNameAsync(userRole.userName);
-                }
-
-            }
-            catch (Exception ex) { return BadRequest("User not found."); 
-            }
-
-            var result = await userManager.AddToRoleAsync(user, role.Name);
-
-            // Save changes to the database
-            await dbContext.SaveChangesAsync();
-
-            return Ok(result);
         }
 
 
-        [HttpPost]
-        [Route("RemoveRole")]
-        public async Task<IActionResult> RemoveRoleFromUser(RoleUserDTO userRole)
+        [HttpPost("UserRole/{userId}")]
+        public async Task<IActionResult> ToggleAdminRole(string userId)
         {
-            if (userRole == null)
-            {
-                return BadRequest("Invalid user or role.");
-            }
-            IdentityRole role;
-            ApplicationUser user;
             try
             {
-                role = await roleManager.FindByIdAsync(userRole.roleId);
-
-                if (role == null)
+                var result = await roleRepository.ToggleAdminRole(userId);
+                if (result.Succeeded)
                 {
-                    role = await roleManager.FindByNameAsync(userRole.roleName);
+                    return Ok("Role updated successfully.");
                 }
-            }
-            catch (Exception ex) { return BadRequest("Role not found."); }
-            // Find the user
-            try
-            {
-                user = await userManager.FindByIdAsync(userRole.UserId);
-                if(user == null)
+                else
                 {
-                    user = await userManager.FindByNameAsync(userRole.userName);
+                    return BadRequest("Failed to update role.");
                 }
             }
             catch (Exception ex)
             {
-                return BadRequest("User not found.");
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-            var result = await userManager.RemoveFromRoleAsync(user, role.Name);
-
-            // Save changes to the database
-            await dbContext.SaveChangesAsync();
-
-            return Ok(result);
-            
         }
-
-        [HttpPost]
+    
+        [HttpGet]
         [Route("GetAll")]
         public async Task<IActionResult> GetRoles()
         {
