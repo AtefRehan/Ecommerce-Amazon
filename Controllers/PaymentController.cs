@@ -24,16 +24,16 @@ namespace ECommerce.Controllers
             orderRepo = _orderRepository;
             mapper = _mapper;
         }
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<PaymentDTO>>> GetAll()
-        //{
-        //    List<PaymentDTO> payments = new List<PaymentDTO>();
-        //    foreach (var item in paymentRepo.GetAllPayments())
-        //    {
-        //        PaymentDTO s = mapper.Map<PaymentDTO>(item);
-        //        payments.Add(s);
-        //    }
-        //    return Ok(payments);
-        //}
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PaymentDTO>>> GetAll()
+        {
+            List<PaymentDTO> payments = new List<PaymentDTO>();
+            foreach (var item in paymentRepo.GetAllPayments())
+            {
+                PaymentDTO s = mapper.Map<PaymentDTO>(item);
+                payments.Add(s);
+            }
+            return Ok(payments);
+        }
     }
 }
