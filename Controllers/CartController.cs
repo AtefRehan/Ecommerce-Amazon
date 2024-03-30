@@ -74,30 +74,30 @@ namespace ECommerce.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult AddProductToCart(CartCreateDto cartDto)
-        {
-            try
-            {
-                Cart newCart = new();
-                newCart.ProductsInCart = new List<ProductInCart>();
-                foreach (var item in cartDto.ProductIds)
-                {
-                    newCart.ProductsInCart.Add(_productInCartRepository.GetProductInCartById(item));
-                }
-
-                // _mapper.Map(cartDto, newCart);
-                _cartRepository.SaveChanges();
-                return Ok(_mapper.Map<CartDto>(newCart));
-            }
-            catch (Exception exception)
-            {
-                return BadRequest(exception.Message);
-            }
-
-
-            return BadRequest();
-        }
+        // [HttpPost]
+        // public IActionResult AddProductToCart(CartCreateDto cartDto)
+        // {
+        //     try
+        //     {
+        //         Cart newCart = new();
+        //         newCart.ProductsInCart = new List<ProductInCart>();
+        //         foreach (var item in cartDto.ProductIds)
+        //         {
+        //             newCart.ProductsInCart.Add(_productInCartRepository.GetProductInCartById(item));
+        //         }
+        //
+        //         // _mapper.Map(cartDto, newCart);
+        //         _cartRepository.SaveChanges();
+        //         return Ok(_mapper.Map<CartDto>(newCart));
+        //     }
+        //     catch (Exception exception)
+        //     {
+        //         return BadRequest(exception.Message);
+        //     }
+        //
+        //
+        //     return BadRequest();
+        // }
 
 
         [HttpPut("{id:int}", Name = "UpdateCart")]

@@ -22,7 +22,7 @@ namespace ECommerce
             CreateMap<ProductCreateDTO, Product>();
             CreateMap<ProductUpdateDTO, Product>();
 
-            CreateMap<Cart, CartDto>().ReverseMap();
+
             CreateMap<ChildProductInCartDto, ProductInCart>().ReverseMap();
             
 
@@ -32,6 +32,9 @@ namespace ECommerce
             CreateMap<CartCreateDto, Cart>().ReverseMap();
             CreateMap<IdentityRole, RoleDTO>();
 
+            CreateMap<Cart, CartDto>().ReverseMap();
+            CreateMap<CartUpdateDto, Cart>().ReverseMap();
+            CreateMap<CartCreateDto, Cart>().ReverseMap();
 
 
             CreateMap<Supplier, SupplierDTO>().ReverseMap();
