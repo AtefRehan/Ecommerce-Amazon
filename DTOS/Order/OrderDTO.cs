@@ -8,7 +8,6 @@
         public int Total { get; set; }
         public bool IsCancelled { get; set; }
         public string ApplicationUserId { get; set; }
-        public string PaymentMethod { get; set; }
         public List<int> OrderProductsID { get; set; }
     }
 }
