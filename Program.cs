@@ -6,6 +6,7 @@ using ECommerce.Repositories.Order_Repository;
 using ECommerce.Repositories.Payment_Repository;
 using ECommerce.Repositories.Product_Repository;
 using ECommerce.Repositories.ProductInCart_Repository;
+using ECommerce.Repositories.Role;
 using ECommerce.Repositories.SupplierRepository;
 using ECommerce.Repositories.Wish_Repository;
 using Microsoft.AspNetCore.Identity;
@@ -28,7 +29,7 @@ namespace ECommerce
             // Add services to the container.
             builder.Services.AddDbContext<AmazonDB>(option =>
             {
-                option.UseSqlServer(builder.Configuration.GetConnectionString("IsraaSQLConnection"));
+                option.UseSqlServer(builder.Configuration.GetConnectionString("AtefSQLConnection"));
 
             });
             builder.Services.AddAutoMapper(typeof(MappingConfig));
@@ -38,6 +39,7 @@ namespace ECommerce
             builder.Services.AddScoped<IProductInCartRepository, ProductInCartRepository>();
             builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
             builder.Services.AddScoped<IWishRepository, WishRepository>();
+            builder.Services.AddScoped<IRoleRepository, RoleRepository>();
             builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
 

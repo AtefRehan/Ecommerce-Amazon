@@ -1,6 +1,7 @@
 using ECommerce.Data;
 using ECommerce.Models;
 using ECommerce.Repositories.Generic_Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Repositories.ProductInCart_Repository;
 
@@ -32,7 +33,7 @@ public class ProductInCartRepository : GenericRepository<ProductInCart>, IProduc
 
     public List<ProductInCart> GetProductsInCartByCartId(int cartId)
     {
-        var productsInCart = _context.ProductInCart.Where(i => i.CartId == cartId).ToList();
+        var productsInCart = _context.ProductInCart.Include(c=>c.Product).Include(c=>c.Cart).Where(i => i.CartId == cartId).ToList();
         return productsInCart;
     }
 
