@@ -2,84 +2,12 @@
 using ECommerce.Data;
 using ECommerce.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Repositories.Role
 {
-    public class RoleRepository: IRoleRepository
+    public class RoleRepository : IRoleRepository
     {
-        //private readonly AmazonDB dbContext;
-
-        //private readonly RoleManager<IdentityRole> roleManager;
-        //private readonly UserManager<ApplicationUser> userManager;
-        //private readonly ILogger<RoleRepository> logger;
-        ////        public RoleRepository(RoleManager<IdentityRole> _roleManager, UserManager<ApplicationUser> _userManager,ILogger<RoleRepository> _logger)
-        ////        {
-        //            this.roleManager = _roleManager;
-        //            this.userManager = _userManager;
-        //            this.logger = _logger;
-        //        }
-        //        public async void importRoles()
-        //        {
-        //            try
-        //            {
-        //                IdentityRole admin = await roleManager.FindByNameAsync("Admin");
-
-        //                if (admin == null)
-        //                {
-        //                    admin = new IdentityRole("Admin");
-        //                }
-        //                IdentityRole client = await roleManager.FindByNameAsync("Admin");
-        //                if (client == null)
-        //                {
-        //                    client = new IdentityRole("Client");
-        //                }
-        //            }
-        //            catch (Exception ex) {  }
-        //        }
-        //        public async IdentityRole Task<AdminToggile>(string userid)
-        //        {
-        //            IdentityRole role;
-        //            ApplicationUser user;
-        //            IdentityResult result;
-
-        //            try
-        //            {
-        //                importRoles();
-        //            }
-        //            catch (Exception ex) {
-
-        //                logger.LogError(ex, "Roles in DataBase Already");
-        //            }
-        //            IdentityRole admin = await roleManager.FindByNameAsync("Admin");
-
-        //            // Find the user
-        //            try
-        //            {
-        //                user = await userManager.FindByIdAsync(userid);
-        //                if (user == null)
-        //                {
-
-        //                }
-        //                var userRoles = await userManager.GetRolesAsync(user);
-        //                if(!userRoles.Contains(admin.Name))
-        //                {
-        //                     result = await userManager.AddToRoleAsync(user,admin.Name);
-        //                }
-        //                else
-        //                {
-        //                    result = await userManager.RemoveFromRoleAsync(user, admin.Name);
-        //                }
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //            }
-
-
-        //            await dbContext.SaveChangesAsync();
-        //            return result;
-        //=        }
-        //    }
-        //}
 
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<ApplicationUser> userManager;
@@ -112,7 +40,23 @@ namespace ECommerce.Repositories.Role
             }
         }
 
-        public async Task<IdentityResult> ToggleAdminRole(string userId)
+        public async Task<bool> IsAdmin(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user != null)
+            {
+                return await userManager.IsInRoleAsync(user, "Admin");
+            }
+            else
+            {
+                logger.LogError("User not found with ID: {UserId}", userId);
+                return false;
+            }
+        }
+
+
+        public async Task<bool> AddAdmin(string userId)
         {
             try
             {
@@ -122,30 +66,76 @@ namespace ECommerce.Repositories.Role
                 if (user == null)
                 {
                     logger.LogError("User not found with ID: {UserId}", userId);
-                    return null;
+                    return false;
                 }
 
                 var adminRole = await roleManager.FindByNameAsync("Admin");
                 if (adminRole == null)
                 {
                     logger.LogError("Admin role not found.");
-                    return null;
+                    return false;
                 }
 
-                if (await userManager.IsInRoleAsync(user, adminRole.Name))
+                var result = await userManager.AddToRoleAsync(user, adminRole.Name);
+                if (result.Succeeded)
                 {
-                    return await userManager.RemoveFromRoleAsync(user, adminRole.Name);
+                    logger.LogInformation("Added Admin role to user with ID: {UserId}", userId);
+                    return true;
                 }
                 else
                 {
-                    return await userManager.AddToRoleAsync(user, adminRole.Name);
+                    logger.LogError("Failed to add Admin role to user with ID: {UserId}. Errors: {Errors}", userId, string.Join(",", result.Errors));
+                    return false;
                 }
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to toggle admin role for user with ID: {UserId}", userId);
-                return null;
+                logger.LogError(ex, "Failed to add Admin role to user with ID: {UserId}", userId);
+                return false;
             }
         }
+
+
+        public async Task<bool> RemoveAdmin(string userId)
+        {
+            try
+            {
+                await ImportRoles(); // Ensure roles are imported
+
+                var user = await userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    logger.LogError("User not found with ID: {UserId}", userId);
+                    return false;
+                }
+
+                var adminRole = await roleManager.FindByNameAsync("Admin");
+                if (adminRole == null)
+                {
+                    logger.LogError("Admin role not found.");
+                    return false;
+                }
+
+                var result = await userManager.RemoveFromRoleAsync(user, adminRole.Name);
+                if (result.Succeeded)
+                {
+                    logger.LogInformation("Removed Admin role from user with ID: {UserId}", userId);
+                    return true;
+                }
+                else
+                {
+                    logger.LogError("Failed to remove Admin role from user with ID: {UserId}. Errors: {Errors}", userId, string.Join(",", result.Errors));
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Failed to remove Admin role from user  with ID: {UserId}", userId);
+                return false;
+            }
+        }
+
+
+
     }
 }
