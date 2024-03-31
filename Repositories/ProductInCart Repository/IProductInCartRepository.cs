@@ -10,6 +10,7 @@ public interface IProductInCartRepository : IGenericRepository<ProductInCart>
     List<ProductInCart> GetProductsInCartByCartId(int cartId);
     // int GetProductInCartIdByCartIdAndProductId(int cartId, int productId);
     public ProductInCart GetProductInCartById(int id);
+    public ProductInCart GetProductInCartByProductId(int id);
 
 
 }

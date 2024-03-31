@@ -41,4 +41,9 @@ public class ProductInCartRepository : GenericRepository<ProductInCart>, IProduc
     {
         return _context.ProductInCart.FirstOrDefault(c => c.ProductId == id);
     }
+
+    public ProductInCart GetProductInCartByProductId(int ProductId)
+    {
+        return _context.ProductInCart.FirstOrDefault(c => c.ProductId == ProductId);
+    }
 }
