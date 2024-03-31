@@ -22,7 +22,7 @@ namespace ECommerce.Controllers
         private readonly AmazonDB _db;
 
         public ProductInCartController(IProductInCartRepository productInCartRepo, IProductRepository productRepo,
-            ICartRepository cartRepo, IMapper mapper,AmazonDB db)
+            ICartRepository cartRepo, IMapper mapper, AmazonDB db)
         {
             _productInCartRepo = productInCartRepo;
             _productRepo = productRepo;
@@ -94,22 +94,75 @@ namespace ECommerce.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteByProductId(int id)
         {
-           
-                try
-                {
-                    var deletedproductInCart = _productInCartRepo.GetProductInCartByProductId(id);
-                    _db.ProductInCart.Remove(deletedproductInCart);
-                    // _productInCartRepo.Delete(deletedproductInCart.ProductId);
-                    _productInCartRepo.SaveChanges();
-                    return NoContent();
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-            
+            try
+            {
+                var deletedproductInCart = _productInCartRepo.GetProductInCartByProductId(id);
+                _db.ProductInCart.Remove(deletedproductInCart);
+                // _productInCartRepo.Delete(deletedproductInCart.ProductId);
+                _productInCartRepo.SaveChanges();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-            return NotFound();
+
+        [HttpPost("{productInCartId:int}/increasequantity")]
+        public IActionResult IncreaseQuantity(int productInCartId)
+        {
+            try
+            {
+                var productInCart = _productInCartRepo.GetById(productInCartId);
+
+                if (productInCart == null)
+                    return NotFound();
+
+                productInCart.Quantity += 1;
+
+                _productInCartRepo.Update(productInCart);
+                _productInCartRepo.SaveChanges();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("{productInCartId:int}/decreasequantity")]
+        public IActionResult DecreaseQuantity(int productInCartId)
+        {
+            try
+            {
+                var productInCart = _productInCartRepo.GetById(productInCartId);
+
+                if (productInCart == null)
+                    return NotFound();
+
+                if (productInCart.Quantity > 1)
+                {
+                    productInCart.Quantity -= 1;
+
+                    _productInCartRepo.Update(productInCart);
+                    _productInCartRepo.SaveChanges();
+
+                    return Ok();
+                }
+                else
+                {
+                    _productInCartRepo.Delete(productInCart.Id);
+                    _productInCartRepo.SaveChanges();
+
+                    return Ok("Product removed from cart as quantity reached zero.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

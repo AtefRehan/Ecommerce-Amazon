@@ -9,5 +9,6 @@ public record SubCategoryReadDto
     public string SubCategoryName { get; init; }
     // public string Description { get; init; }
     public ChildCategoryReadDto Category { get; init; }
-    public List<ChildProductDTO> Products { get; init; }
+    public List<ProductDTO> Products { get; init; }
+    // public List<ChildProductDTO> Products { get; init; }
 }
