@@ -62,7 +62,12 @@ namespace ECommerce.Controllers
                 }
             }
             return BadRequest(ModelState);
-
+        }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            categoryRepo.DeleteCategoryById(id);
+            return Ok();
         }
     }
 }

@@ -31,4 +31,18 @@ public class CategoryRepository : GenericRepository<Category> , ICategoryReposit
         _context.Categories.Add(category);
         SaveChanges();
     }
+
+
+    public void DeleteCategoryById(int id)
+    {
+        var targetCategory = _context.Categories.Include(p => p.SubCategories).FirstOrDefault(p => p.CategoryId == id);
+
+        if (targetCategory != null)
+        {
+            _context.SubCategories.RemoveRange(targetCategory.SubCategories);
+
+            _context.Categories.Remove(targetCategory);
+            _context.SaveChanges();
+        }
+    }
 }
