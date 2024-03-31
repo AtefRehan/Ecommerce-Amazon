@@ -1,9 +1,10 @@
 ﻿using ECommerce.Models;
 using System.ComponentModel.DataAnnotations;
+using ECommerce.Repositories.Generic_Repository;
 
 namespace ECommerce.Models
 {
-    public class Category
+    public class Category 
     {
         [Key]
         public int CategoryId { get; set; }

@@ -1,4 +1,5 @@
 using AutoMapper;
+using ECommerce.Data;
 using ECommerce.DTOS.Product;
 using ECommerce.DTOS.ProductInCart;
 using ECommerce.Models;
@@ -18,14 +19,16 @@ namespace ECommerce.Controllers
         private readonly IProductRepository _productRepo;
         private readonly ICartRepository _cartRepo;
         private readonly IMapper _mapper;
+        private readonly AmazonDB _db;
 
         public ProductInCartController(IProductInCartRepository productInCartRepo, IProductRepository productRepo,
-            ICartRepository cartRepo, IMapper mapper)
+            ICartRepository cartRepo, IMapper mapper,AmazonDB db)
         {
             _productInCartRepo = productInCartRepo;
             _productRepo = productRepo;
             _cartRepo = cartRepo;
             _mapper = mapper;
+            _db = db;
         }
 
 
@@ -66,25 +69,46 @@ namespace ECommerce.Controllers
             var products = _productInCartRepo.GetProductsInCartByCartId(id);
             return Ok(_mapper.Map<List<ProductInCartReadDto>>(products));
         }
+        //
+        //     [HttpDelete("{id}")]
+        //     public IActionResult Delete(int id)
+        //     {
+        //         if (_productInCartRepo.GetById(id) != null)
+        //         {
+        //             try
+        //             {
+        //                 var deletedproductInCart=_productInCartRepo.GetById(id);
+        //                 _productInCartRepo.Delete(id);
+        //                 _productInCartRepo.SaveChanges();
+        //                 return NoContent();
+        //
+        //             }
+        //             catch (Exception ex)
+        //             {
+        //                 return BadRequest(ex.Message);
+        //             }
+        //         }
+        //         return NotFound();
+        //     }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult DeleteByProductId(int id)
         {
-            if (_productInCartRepo.GetById(id) != null)
-            {
+           
                 try
                 {
-                    var deletedproductInCart=_productInCartRepo.GetById(id);
-                    _productInCartRepo.Delete(id);
+                    var deletedproductInCart = _productInCartRepo.GetProductInCartByProductId(id);
+                    _db.ProductInCart.Remove(deletedproductInCart);
+                    // _productInCartRepo.Delete(deletedproductInCart.ProductId);
                     _productInCartRepo.SaveChanges();
-                    return NotFound();
-
+                    return NoContent();
                 }
                 catch (Exception ex)
                 {
                     return BadRequest(ex.Message);
                 }
-            }
+            
+
             return NotFound();
         }
     }
