@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Repositories.Catergory_Repository;
 
-public class CategoryRepository : GenericRepository<CategoryRepository> , ICategoryRepository
+public class CategoryRepository : GenericRepository<Category> , ICategoryRepository
 {
     private readonly AmazonDB _context;
 
@@ -17,5 +17,12 @@ public class CategoryRepository : GenericRepository<CategoryRepository> , ICateg
     public List<Category> GetAllCategories()
     {
         return _context.Categories.Include(a => a.SubCategories).ToList();
+    }
+
+    public Category GetAllCategoriesById(int id)
+    {
+        return _context.Categories
+                       .Include(p => p.SubCategories)
+                       .FirstOrDefault(p => p.CategoryId == id);
     }
 }
