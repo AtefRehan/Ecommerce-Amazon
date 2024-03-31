@@ -58,6 +58,7 @@ namespace ECommerce
 
             CreateMap<SubCategoryChildReadDTO , SubCategory>().ReverseMap();
             CreateMap<CategoryReadDTO, Category>().ReverseMap();
+            CreateMap<CategoryCreateDTO, Category>().ReverseMap();
 
 
             CreateMap<Order, OrderDTO>().ForMember(o => o.OrderProductsID,

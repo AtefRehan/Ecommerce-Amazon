@@ -42,5 +42,27 @@ namespace ECommerce.Controllers
             }
             return Ok(mapper.Map<CategoryReadDTO>(Target_category));
         }
+
+        [HttpPost]
+        public async Task<ActionResult> Add(CategoryCreateDTO c)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var createdCategory = mapper.Map<Category>(c);
+                    categoryRepo.Create(createdCategory);
+                    categoryRepo.SaveChanges();
+                    return CreatedAtAction("GetById", new { id = createdCategory.CategoryId }, c);
+
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            return BadRequest(ModelState);
+
+        }
     }
 }

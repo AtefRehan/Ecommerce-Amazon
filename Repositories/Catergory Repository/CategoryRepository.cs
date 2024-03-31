@@ -25,4 +25,10 @@ public class CategoryRepository : GenericRepository<Category> , ICategoryReposit
                        .Include(p => p.SubCategories)
                        .FirstOrDefault(p => p.CategoryId == id);
     }
+
+    public void Create(Category category)
+    {
+        _context.Categories.Add(category);
+        SaveChanges();
+    }
 }
