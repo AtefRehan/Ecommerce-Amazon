@@ -18,4 +18,11 @@ public class CategoryRepository : GenericRepository<Category> , ICategoryReposit
     {
         return _context.Categories.Include(a => a.SubCategories).ToList();
     }
+
+    public Category GetAllCategoriesById(int id)
+    {
+        return _context.Categories
+                       .Include(p => p.SubCategories)
+                       .FirstOrDefault(p => p.CategoryId == id);
+    }
 }

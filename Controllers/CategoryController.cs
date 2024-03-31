@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ECommerce.DTOS.Category;
 using ECommerce.DTOS.Supplier;
+using ECommerce.Models;
 using ECommerce.Repositories.Catergory_Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,12 +9,12 @@ namespace ECommerce.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Category:ControllerBase
+    public class CategoryController:ControllerBase
     {
         private readonly ICategoryRepository categoryRepo;
         private readonly IMapper mapper;
 
-        public Category(ICategoryRepository _categoryRepo , IMapper _mapper)
+        public CategoryController(ICategoryRepository _categoryRepo , IMapper _mapper)
         {
             categoryRepo = _categoryRepo;
             mapper = _mapper;
@@ -29,6 +30,17 @@ namespace ECommerce.Controllers
                 categories.Add(c);
             }
             return Ok(categories);
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<CategoryReadDTO> GetById(int id)
+        {
+            Category Target_category = categoryRepo.GetAllCategoriesById(id);
+            if (Target_category == null)
+            {
+                return NotFound();
+            }
+            return Ok(mapper.Map<CategoryReadDTO>(Target_category));
         }
     }
 }

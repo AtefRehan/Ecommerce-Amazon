@@ -45,8 +45,10 @@ namespace ECommerce
             builder.Services.AddScoped<IRoleRepository, RoleRepository>();
             builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
+
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
+
 
 
 
