@@ -1,9 +1,12 @@
 using AutoMapper;
+using ECommerce.DTOS.SendEmail;
 using ECommerce.DTOS.SubCategory;
 using ECommerce.Models;
 using ECommerce.Repositories.Catergory_Repository;
 using ECommerce.Repositories.Product_Repository;
 using ECommerce.Repositories.SubCategory_Repository;
+using ECommerce.Services;
+using ECommerce.Services.MailV;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,14 +20,16 @@ namespace ECommerce.Controllers
         private readonly ICategoryRepository _categoryRepository;
         private readonly ISubCategoryRepository _subCategoryRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IEmailService _emailService;
 
 
-        public SubCategoryController(IMapper mapper,ICategoryRepository categoryRepository,ISubCategoryRepository subCategoryRepository,IProductRepository productRepository)
+        public SubCategoryController(IMapper mapper,ICategoryRepository categoryRepository,ISubCategoryRepository subCategoryRepository,IProductRepository productRepository ,IEmailService emailService)
         {
             _mapper = mapper;
             _categoryRepository = categoryRepository;
             _subCategoryRepository = subCategoryRepository;
             _productRepository = productRepository;
+            _emailService = emailService;
         }
 
 
@@ -78,8 +83,14 @@ namespace ECommerce.Controllers
             }
             return BadRequest(ModelState);
         }
-
         
         
+        
+        // [HttpPost(Name = "SendEmail")]
+        // public void SendEmail(SendEmailDto emailDto)
+        // {
+        //     _emailService.SendEmail(emailDto);
+        // }
+        //
     }
 }
