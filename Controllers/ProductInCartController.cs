@@ -91,7 +91,7 @@ namespace ECommerce.Controllers
         //         return NotFound();
         //     }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Product/{id}")]
         public IActionResult DeleteByProductId(int id)
         {
             try
@@ -164,5 +164,14 @@ namespace ECommerce.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpDelete("Cart/{id}")]
+        public IActionResult DeleteAllByCartId(int id)
+        {
+            if (id == null) return NotFound();
+            _productInCartRepo.DeleteProductsInCartByCartId(id);
+            _productInCartRepo.SaveChanges();
+            return NoContent();
+        }   
     }
 }
