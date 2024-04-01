@@ -12,6 +12,8 @@ using ECommerce.Repositories.Role;
 using ECommerce.Repositories.SubCategory_Repository;
 using ECommerce.Repositories.SupplierRepository;
 using ECommerce.Repositories.Wish_Repository;
+using ECommerce.Services;
+using ECommerce.Services.MailV;
 using Microsoft.AspNetCore.Identity;
 // using ECommerce.Repositories.Product;
 using Microsoft.EntityFrameworkCore;
@@ -49,7 +51,13 @@ namespace ECommerce
             builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
 
 
-
+            // builder.Services.AddTransient<IMailService, MailService>();
+            
+            // builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+            
+            
+            builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailConfiguration"));
+            builder.Services.AddScoped<IEmailService, EmailService>();
 
 
             builder.Services.AddCors(options =>
@@ -78,6 +86,8 @@ namespace ECommerce
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddLogging();
+
+
 
             var app = builder.Build();
 
