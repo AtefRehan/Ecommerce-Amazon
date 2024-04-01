@@ -46,4 +46,6 @@ public class ProductInCartRepository : GenericRepository<ProductInCart>, IProduc
     {
         return _context.ProductInCart.FirstOrDefault(c => c.ProductId == ProductId);
     }
+
+
 }
