@@ -17,7 +17,10 @@ using ECommerce.Services.MailV;
 using Microsoft.AspNetCore.Identity;
 // using ECommerce.Repositories.Product;
 using Microsoft.EntityFrameworkCore;
-
+using System.Text.Json.Serialization;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ECommerce
 
@@ -34,7 +37,7 @@ namespace ECommerce
             // Add services to the container.
             builder.Services.AddDbContext<AmazonDB>(option =>
             {
-                option.UseSqlServer(builder.Configuration.GetConnectionString("AtefSQLConnection"));
+                option.UseSqlServer(builder.Configuration.GetConnectionString("IsraaSQLConnection"));
 
             });
             builder.Services.AddAutoMapper(typeof(MappingConfig));
@@ -46,6 +49,8 @@ namespace ECommerce
             builder.Services.AddScoped<IWishRepository, WishRepository>();
             builder.Services.AddScoped<IRoleRepository, RoleRepository>();
             builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+            builder.Services.AddScoped<TokenService, TokenService>();
+
 
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
@@ -60,13 +65,17 @@ namespace ECommerce
             builder.Services.AddScoped<IEmailService, EmailService>();
 
 
+
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                     policy => { policy.WithOrigins().AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
             });
 
-
+            builder.Services.AddControllers().AddJsonOptions(opt =>
+            {
+                opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
                     options.Password.RequiredLength = 8;
@@ -79,9 +88,34 @@ namespace ECommerce
                 })
                 .AddEntityFrameworkStores<AmazonDB>()
                 .AddDefaultTokenProviders();
+            // These will eventually be moved to a secrets file, but for alpha development appsettings is fine
+            var validIssuer = builder.Configuration.GetValue<string>("JwtTokenSettings:ValidIssuer");
+            var validAudience = builder.Configuration.GetValue<string>("JwtTokenSettings:ValidAudience");
+            var symmetricSecurityKey = builder.Configuration.GetValue<string>("JwtTokenSettings:SymmetricSecurityKey");
 
+            builder.Services.AddAuthentication(options => {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    options.IncludeErrorDetails = true;
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ClockSkew = TimeSpan.Zero,
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = validIssuer,
+                        ValidAudience = validAudience,
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(symmetricSecurityKey)
+                        ),
+                    };
+                });
 
-            builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -99,16 +133,19 @@ namespace ECommerce
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            app.UseHttpsRedirection(); 
+            app.UseStatusCodePages();
+
             app.UseRouting();
             app.UseCors(MyAllowSpecificOrigins);
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 
             app.Run();
+
         }
     }
 }

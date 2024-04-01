@@ -12,6 +12,11 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Data;
+using ECommerce;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration.UserSecrets;
+using ECommerce.Repositories.Role;
 
 namespace ECommerce.Controllers
 {
@@ -23,15 +28,18 @@ namespace ECommerce.Controllers
         private readonly IConfiguration configuration;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IMapper mapper;
-
-        public UserController(AmazonDB _context, IConfiguration _configuration, UserManager<ApplicationUser> _userManager, IMapper _mapper, IWishRepository _wish)
+        private readonly IRoleRepository roleRepository;
+        private readonly TokenService tokenService;
+        public UserController(AmazonDB _context, IConfiguration _configuration, UserManager<ApplicationUser> _userManager, IMapper _mapper, IRoleRepository _roleRepository, TokenService _tokenService)
         {
             this.configuration = _configuration;
             this.userManager = _userManager;
             this.mapper = _mapper;
             this.context= _context;
+            this.roleRepository = _roleRepository;
+            this.tokenService = _tokenService;
         }
-      
+
         #region Register
         [HttpPost]
         [Route("Register")]
@@ -64,23 +72,18 @@ namespace ECommerce.Controllers
                         await userManager.AddToRoleAsync(NewUser, "Client");
                     }
                     catch  { return Ok("Role Not Valied"); }
-                    var creatingClaimsResult = await userManager.AddClaimsAsync(NewUser, new List<Claim>
-                    {
-                       new Claim (ClaimTypes.NameIdentifier, NewUser.UserName),
-                        new Claim (ClaimTypes.Email, NewUser.Email),
-                        new Claim (ClaimTypes.Name, NewUser.UserName)
-
-                    });
+                    
                     return Ok(NewUser);
                 }
             }
             return BadRequest(ModelState);
         }
         #endregion
+
         #region Login
         [HttpPost]
         [Route("login")]
-        public async Task<ActionResult<TokenDTO>> Login(LoginDTO credentials)
+        public async Task<ActionResult<AuthResponse>> Login(LoginDTO credentials)
         {
             if (ModelState.IsValid)
             {
@@ -108,49 +111,22 @@ namespace ECommerce.Controllers
                     return Unauthorized("Wrong Credentials");
                 }
 
+                var accessToken = tokenService.CreateToken(user);
+                await context.SaveChangesAsync();
 
-                var userClaims = await userManager.GetClaimsAsync(user);
-
-                return GenerateToken(userClaims.ToList());
+                return Ok(new AuthResponse
+                {
+                    UserId = user.Id,
+                    CartId = user.CartId,
+                    Email = user.Email,
+                    IsAdmin = roleRepository.IsAdmin(user.Id).Result,
+                    Token = accessToken,
+                }); 
             }
             return BadRequest(ModelState);
         }
         #endregion
-        #region Helpers
-        private TokenDTO GenerateToken(List<Claim> userClaims)
-        {
-            #region Getting Secret Key ready
-            var secretKey = configuration.GetValue<string>("SecretKey");
-            var secretKeyInBytes = Encoding.ASCII.GetBytes(secretKey);
-            var key = new SymmetricSecurityKey(secretKeyInBytes);
-            #endregion
 
-            #region Combining Secret Key with Hashing Algorithm
-            var methodUsedInGeneratingToken = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-            #endregion
-
-            #region Putting all together (Define the token)
-            var jwt = new JwtSecurityToken(
-                claims: userClaims,
-                expires: DateTime.Now.AddMinutes(15),
-                notBefore: DateTime.Now,
-                issuer: "AuthServer1",
-                audience: "Service1",
-                signingCredentials: methodUsedInGeneratingToken);
-            #endregion
-
-            #region Generate the defined Token
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var resultToken = tokenHandler.WriteToken(jwt);
-            #endregion
-
-            return new TokenDTO
-            {
-                Token = resultToken,
-                ExpiryDate = jwt.ValidTo
-            };
-        }
-        #endregion
         #region SignOut
         private readonly HashSet<string> _blacklistedTokens = new HashSet<string>();
         [HttpGet]
@@ -163,6 +139,7 @@ namespace ECommerce.Controllers
         }
 
         #endregion
+
         #region All Users
         [HttpGet]
         [Route("Accounts")]
