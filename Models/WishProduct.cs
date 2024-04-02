@@ -7,7 +7,7 @@ namespace ECommerce.Models
     {
 
         // Foreign key for ApplicationUser (User)
-        [ForeignKey("User")]
+        [ForeignKey("ApplicationUser")]
         public string UserId { get; set; }
 
         // Navigation property to ApplicationUser (User)

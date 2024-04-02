@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using ECommerce.DTOS.Order;
+using ECommerce.DTOS.Order.CreateOrderDTOS;
+using ECommerce.DTOS.Order.ShowOrderDTOs;
 using ECommerce.Models;
 using ECommerce.Repositories.Order_Repository;
 using Microsoft.AspNetCore.Http;
@@ -41,6 +43,12 @@ namespace ECommerce.Controllers
         public ActionResult<ICollection<OrderDTO>> GetAll()
         {
             var result = _orderRepo.GetOrders();
+                return Ok(result);
+        }
+        [HttpGet("Cart/{cartId}")]
+        public ActionResult<ICollection<OrderDTO>> GetUserOrders(int cartId)
+        {
+            var result = _orderRepo.GetOrdersByCartId(cartId);
             return Ok(result);
         }
 
@@ -76,6 +84,21 @@ namespace ECommerce.Controllers
             else
             {
                 return NotFound();
+            }
+        }
+
+        [HttpPost("CreateOrder/")]
+        public ActionResult<ICollection<OrderDTO>> CreateOrder(CreateOrderInputDTO inputDTO)
+        {
+            var result = _orderRepo.CreateOrder(cartId: inputDTO.CartId, paymentId: inputDTO.PaymentId);
+
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest();
             }
         }
     }

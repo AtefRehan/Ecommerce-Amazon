@@ -19,4 +19,18 @@ public class PaymentRepository:GenericRepository<Payment>,IPaymentRepository
         return _context.Payment.Include(a => a.Orders).ToList();
     }
 
+    public Payment GetAllPaymentsById(int id)
+    {
+        return _context.Payment
+                       .Include(p => p.Orders)
+                       .FirstOrDefault(p => p.PaymentId == id);
+    }
+
+    public void Create(Payment payment)
+    {
+        _context.Payment.Add(payment);
+        SaveChanges();
+    }
+
+
 }

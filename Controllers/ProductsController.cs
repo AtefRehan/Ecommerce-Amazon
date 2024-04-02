@@ -29,14 +29,25 @@ namespace ECommerce.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAll()
         {
-            List<ProductDTO> products = new List<ProductDTO>();
-            foreach (var item in product.GetAllProducts())
+            try 
             {
-                ProductDTO p = mapper.Map<ProductDTO>(item);
-                products.Add(p);
+                List<ProductDTO> products = new List<ProductDTO>();
+                
+                foreach (var item in product.GetAllProducts())
+                {
+                    ProductDTO p = mapper.Map<ProductDTO>(item);
+                    products.Add(p);
+                }
+                return Ok(products);
             }
-            return Ok(products);
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving products.");
+            }
+            
+
         }
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ProductDetailsDTO>> GetProductById(int id)
         {
@@ -56,10 +67,10 @@ namespace ECommerce.Controllers
         {
             if (p == null)
             {
-                return NotFound();
+                return BadRequest();
             }
             if (!ModelState.IsValid)
-                return NotFound();
+                return BadRequest();
             else
             {
                 var productCreated = mapper.Map<Product>(p);
@@ -75,8 +86,10 @@ namespace ECommerce.Controllers
         {
 
             if (p == null) return BadRequest();
-            if (p.productId != id) return BadRequest();
+            if (p.productId != id) return NotFound();
+            if(!ModelState.IsValid) return BadRequest();
             var updated = mapper.Map<Product>(p);
+            if(updated.IsCancelled == true) return NotFound();
             product.Update(updated);
             product.SaveChanges();
            return CreatedAtAction("GetProductById", new { id = updated.ProductId }, p);
@@ -91,15 +104,6 @@ namespace ECommerce.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             product.DeleteProductById(id);
-            //student s = db.students.Find(id);
-            //if (s == null) return NotFound();
-            //else
-            //{
-            //    db.students.Remove(s);
-            //    db.SaveChanges();
-            //    return Ok(s);
-            //}
-
             return Ok();
         }
 
