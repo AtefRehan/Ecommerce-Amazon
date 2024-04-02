@@ -24,6 +24,6 @@ namespace ECommerce.Models
         public int? PaymentId { get; set; }
         public virtual Payment payment { get; set; }
 
-        public virtual ICollection<Product> OrderProducts { get; set; }= new HashSet<Product>();
+        public virtual ICollection<OrderProduct> OrderProducts { get; set; }= new HashSet<OrderProduct>();
     }
 }

@@ -63,10 +63,15 @@ namespace ECommerce
             CreateMap<CategoryCreateDTO, Category>().ReverseMap();
 
 
-            CreateMap<Product, ProductInShowOrder>();
-            CreateMap<Order, OrderDTO>().ForMember(o => o.OrderProducts,
-                src => src.MapFrom(p => p.OrderProducts)).ForMember(p => p.CardType, src => src.MapFrom(t => t.payment.CardType));
+            CreateMap<Order, OrderDTO>()
+                        .ForMember(dest => dest.CardType, opt => opt.MapFrom(src => src.payment.CardType))
+                        .ForMember(dest => dest.OrderProducts, opt => opt.MapFrom(src => src.OrderProducts));
 
+            CreateMap<OrderProduct, ProductInShowOrder>()
+                .ForMember(dest => dest.Stock, opt => opt.MapFrom(src => src.Product.Stock))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Product.Name))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Product.Price))
+                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Product.Image));
         }
 
         private AmazonDB dbContext;

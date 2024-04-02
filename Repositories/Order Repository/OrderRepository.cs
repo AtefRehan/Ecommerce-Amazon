@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,8 +33,14 @@ namespace ECommerce.Repositories.Order_Repository
         {
             try
             {
-                var order = _context.Orders.Where(o => !o.IsCancelled).Include(o => o.OrderProducts).FirstOrDefault(o => o.OrderId == orderId);
+                var order = _context.Orders.Where(o => !o.IsCancelled).Include(o => o.OrderProducts).ThenInclude(p=>p.Product).FirstOrDefault(o => o.OrderId == orderId);
                 order.IsCancelled = true;
+                foreach (var item in order.OrderProducts)
+                {
+                    _context.Products.FirstOrDefault(p => p.ProductId == item.ProductId).Stock += item.Quantity;
+                    _context.SaveChanges();
+                    
+                }
                 _context.Orders.Update(order);
                 _context.SaveChanges();
                 OrderDTO orderDTO = _mapper.Map<OrderDTO>(order);
@@ -51,9 +58,8 @@ namespace ECommerce.Repositories.Order_Repository
         {
             try
             {
-                var order = _context.Orders.Where(o => !o.IsCancelled)
-                .Include(o => o.OrderProducts)
-                .Include(p => p.payment)
+                var order = _context.Orders.Where(o => !o.IsCancelled).Include(p => p.payment)
+                .Include(o => o.OrderProducts).ThenInclude(p=>p.Product)
                 .FirstOrDefault(o => o.OrderId == id);
 
                 if (order != null)
@@ -75,9 +81,8 @@ namespace ECommerce.Repositories.Order_Repository
         {
             try
             {
-                var orders = _context.Orders.Where(o => !o.IsCancelled)
-                .Include(o => o.OrderProducts)
-                .Include(p => p.payment)
+                var orders = _context.Orders.Where(o => !o.IsCancelled).Include(p => p.payment)
+                .Include(o => o.OrderProducts).ThenInclude(p=>p.Product)
                 .ToList();
 
                 if (orders.Count > 0)
@@ -108,7 +113,7 @@ namespace ECommerce.Repositories.Order_Repository
                 {
                     var orders = _context.Orders
                         .Include(o => o.payment)
-                        .Include(o => o.OrderProducts)
+                        .Include(o => o.OrderProducts).ThenInclude(p => p.Product)
                         .Where(o => o.ApplicationUserId == userId && !o.IsCancelled)
                         .ToList();
 
@@ -135,7 +140,7 @@ namespace ECommerce.Repositories.Order_Repository
                 {
                     var orders = _context.Orders
                         .Include(o => o.payment)
-                        .Include(o => o.OrderProducts)
+                        .Include(o => o.OrderProducts).ThenInclude (p => p.Product) 
                         .Where(o => o.ApplicationUserId == user.Id && !o.IsCancelled)
                         .ToList();
 
@@ -156,7 +161,8 @@ namespace ECommerce.Repositories.Order_Repository
             try
             {
                 var payment = _context.Payment
-                .Include(p => p.Orders.Where(o => !o.IsCancelled)).ThenInclude(o => o.OrderProducts)
+                .Include(p => p.Orders.Where(o => !o.IsCancelled))
+                .ThenInclude(o => o.OrderProducts).ThenInclude(p => p.Product)
                 .FirstOrDefault(p => p.PaymentId == paymentId);
 
                 return _mapper.Map<List<OrderDTO>>(payment.Orders);
@@ -166,86 +172,65 @@ namespace ECommerce.Repositories.Order_Repository
             {
                 return null;
             }
-
         }
 
-
-        public CreateOrderDTO CreateOrder(int cartId, int paymentId)
+        public OrderDTO CreateOrder(int cartId, int paymentId)
         {
-            CreateOrderDTO newOrderDTO = new CreateOrderDTO();
-            List<ProductInOrderDTO> productsDTO = new List<ProductInOrderDTO>(); // Initialize the list
-            Cart cart;
-            Payment payment;
-            Order order = new Order();
-            order.OrderProducts = new List<Product>(); // Initialize the collection
+            var cart = _context.Carts.Include(c => c.ProductsInCart).FirstOrDefault(c => c.CartId == cartId);
+            var payment = _context.Payment.Find(paymentId);
 
-            int total = 0;
-            try
+            if (cart == null || payment == null)
             {
-                cart = _context.Carts.Include(p => p.ApplicationUser).Include(p => p.ProductsInCart)
-                                    .FirstOrDefault(c => c.CartId == cartId);
+                // Handle invalid cart or payment
+                return null;
+            }
 
-                payment = _context.Payment.FirstOrDefault(p => p.PaymentId == paymentId);
-                if (cart != null&& cart.ProductsInCart.Count>0)
+            // Create the order
+            var order = new Order
+            {
+                CreatedAt = DateTime.Now,
+                ShippingDate = DateTime.Now.AddDays(3),
+                Total = 0, // Calculate total below
+                IsCancelled = false,
+                ApplicationUser = cart.ApplicationUser,
+                ApplicationUserId = cart.ApplicationUserId,
+                //payment = payment,
+                PaymentId = payment.PaymentId,
+            };
+
+            List<OrderProduct> OrderProducts = new List<OrderProduct>();
+
+            foreach (var item in cart.ProductsInCart)
+            {
+                var product = _context.Products.Find(item.ProductId);
+
+                if (product != null)
                 {
-                    order.OrderProducts = new List<Product>(); // Initialize the collection
-                    foreach (var item in cart.ProductsInCart)
+                    // Create an OrderProduct
+                    var orderProduct = new OrderProduct
                     {
-                        var product = _context.Products.FirstOrDefault(p => p.ProductId == item.ProductId);
+                        ProductId = product.ProductId,
+                        Order = order,
+                        OrderId = order.OrderId,
+                        Product = product,
+                        Quantity = item.Quantity
+                    };
 
-                        if (product != null)
-                        {
-                            order.OrderProducts.Add(product);
+                    // Add to order
+                    order.OrderProducts.Add(orderProduct);
 
-                            int quantity = item.Quantity;
-                            int? price = product.Price;
-
-                            if (price != null)
-                            {
-                                total += quantity * price.Value;
-                                var productOrderDTO = new ProductInOrderDTO
-                                {
-                                    Name = product.Name,
-                                    Image = product.Image,
-                                    ProductId = item.ProductId,
-                                    Quantity = quantity,
-                                    Price = price,
-                                    TotalPrice = quantity * price.Value
-                                };
-                                productsDTO.Add(productOrderDTO);
-                            }
-                        }
-                    }
-
-                    if (payment != null)
-                    {
-                        order.CreatedAt = DateTime.Now;
-                        order.ShippingDate = DateTime.Now.AddDays(3);
-                        order.IsCancelled = false;
-                        order.ApplicationUser = cart.ApplicationUser;
-                        order.ApplicationUserId = cart.ApplicationUserId;
-                        order.payment = payment;
-                        order.PaymentId = payment.PaymentId;
-                        order.Total = total;
-                        _context.Orders.Add(order);
-                        _context.SaveChanges();
-                        newOrderDTO.UserName = order.ApplicationUser.UserName;
-                        newOrderDTO.OrderId = order.OrderId;
-                        newOrderDTO.ApplicationUserId = order.ApplicationUserId;
-                        newOrderDTO.CreatedAt = order.CreatedAt;
-                        newOrderDTO.ShippingDate = order.ShippingDate;
-                        newOrderDTO.Items = productsDTO;
-                        newOrderDTO.Total = total;
-                        newOrderDTO.CardType = payment.CardType;
-                        newOrderDTO.Card_Num = payment.Card_Num;
-                    }
+                    // Calculate total
+                    order.Total += (int)item.Quantity * (int)product.Price;
+                    product.Stock = product.Stock- item.Quantity;
                 }
 
-                return newOrderDTO;
             }
-            catch (Exception ex) { _logger.LogError(ex, "Can't Fetch Data"); return null; }
+            // Save changes
+            _context.Orders.Add(order);
+            _context.SaveChanges();
 
+    
+            return _mapper.Map<OrderDTO>(order);
         }
-
     }
 }
