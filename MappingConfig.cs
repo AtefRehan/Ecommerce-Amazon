@@ -4,6 +4,7 @@ using ECommerce.DTO.Role;
 using ECommerce.DTOS.Cart;
 using ECommerce.DTOS.Category;
 using ECommerce.DTOS.Order;
+using ECommerce.DTOS.Order.ShowOrderDTOs;
 using ECommerce.DTOS.Payment;
 using ECommerce.DTOS.Product;
 using ECommerce.DTOS.ProductInCart;
@@ -61,8 +62,10 @@ namespace ECommerce
             CreateMap<CategoryCreateDTO, Category>().ReverseMap();
 
 
-            CreateMap<Order, OrderDTO>().ForMember(o => o.OrderProductsID,
-                src => src.MapFrom(p => p.OrderProducts.Select(id => id.ProductId)));
+            CreateMap<Product, ProductInShowOrder>();
+            CreateMap<Order, OrderDTO>().ForMember(o => o.OrderProducts,
+                src => src.MapFrom(p => p.OrderProducts)).ForMember(p => p.CardType, src => src.MapFrom(t => t.payment.CardType));
+
         }
 
         private AmazonDB dbContext;

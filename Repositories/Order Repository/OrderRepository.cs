@@ -1,8 +1,12 @@
 using AutoMapper;
 using ECommerce.Data;
 using ECommerce.DTOS.Order;
+using ECommerce.DTOS.Order.CreateOrderDTOS;
+using ECommerce.DTOS.Order.ShowOrderDTOs;
 using ECommerce.Models;
 using ECommerce.Repositories.Generic_Repository;
+using MailKit.Search;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -24,46 +28,72 @@ namespace ECommerce.Repositories.Order_Repository
             _logger = logger;
         }
 
-        public Order DeleteOrder(int orderId)
+        public OrderDTO DeleteOrder(int orderId)
         {
-            var order = _context.Orders.Find(orderId);
-            if (order != null)
+            try
             {
+                var order = _context.Orders.Where(o => !o.IsCancelled).Include(o => o.OrderProducts).FirstOrDefault(o => o.OrderId == orderId);
                 order.IsCancelled = true;
                 _context.Orders.Update(order);
                 _context.SaveChanges();
+                OrderDTO orderDTO = _mapper.Map<OrderDTO>(order);
+                return orderDTO;
             }
-            return order;
-        }
 
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "this Order with Id={orderId} Not Found" + orderId);
+                return null;
+            }
+
+        }
         public OrderDTO GetOrder(int id)
         {
-            var order = _context.Orders
+            try
+            {
+                var order = _context.Orders.Where(o => !o.IsCancelled)
                 .Include(o => o.OrderProducts)
                 .Include(p => p.payment)
                 .FirstOrDefault(o => o.OrderId == id);
 
-            if (order != null)
-            {
-                return _mapper.Map<OrderDTO>(order);
+                if (order != null)
+                {
+                    return _mapper.Map<OrderDTO>(order);
+                }
+                _logger.LogError("Not found Order With Id={id}" + id);
+                return null;
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed Connection With Database Not found Order With Id={id}" + id);
 
-            return null;
+                return null;
+            }
         }
 
         public ICollection<OrderDTO> GetOrders()
         {
-            var orders = _context.Orders
+            try
+            {
+                var orders = _context.Orders.Where(o => !o.IsCancelled)
                 .Include(o => o.OrderProducts)
                 .Include(p => p.payment)
                 .ToList();
 
-            if (orders.Count > 0)
+                if (orders.Count > 0)
+                {
+                    return _mapper.Map<List<OrderDTO>>(orders);
+                }
+                _logger.LogError("Not found Orders");
+                return null;
+            }
+            catch (Exception ex)
             {
-                return _mapper.Map<List<OrderDTO>>(orders);
+                _logger.LogError(ex, "Failed Connection With Database Not found Orders");
+
+                return null;
             }
 
-            return null;
         }
 
         public ICollection<OrderDTO> GetOrdersByUserId(string userId)
@@ -71,14 +101,20 @@ namespace ECommerce.Repositories.Order_Repository
             try
             {
                 var user = _context.Users
-                    .Include(u => u.Orders)
-                        .ThenInclude(o => o.payment)
-                    .FirstOrDefault(u => u.Id == userId);
+            .Include(u => u.Orders)
+            .FirstOrDefault(u => u.Id == userId);
 
                 if (user != null)
                 {
-                    return _mapper.Map<List<OrderDTO>>(user.Orders);
+                    var orders = _context.Orders
+                        .Include(o => o.payment)
+                        .Include(o => o.OrderProducts)
+                        .Where(o => o.ApplicationUserId == userId && !o.IsCancelled)
+                        .ToList();
+
+                    return _mapper.Map<List<OrderDTO>>(orders);
                 }
+                return null;
             }
             catch (Exception ex)
             {
@@ -90,18 +126,98 @@ namespace ECommerce.Repositories.Order_Repository
 
         public ICollection<OrderDTO> GetOrdersByPaymentId(int paymentId)
         {
-            var payment = _context.Payment
-                .Include(p => p.Orders)
+            try
+            {
+                var payment = _context.Payment
+                .Include(p => p.Orders.Where(o => !o.IsCancelled)).ThenInclude(o => o.OrderProducts)
                 .FirstOrDefault(p => p.PaymentId == paymentId);
 
-            if (payment != null)
-            {
                 return _mapper.Map<List<OrderDTO>>(payment.Orders);
+
+            }
+            catch
+            {
+                return null;
             }
 
-            return null;
         }
 
-       
+
+        public CreateOrderDTO CreateOrder(int cartId, int paymentId)
+        {
+            CreateOrderDTO newOrderDTO = new CreateOrderDTO();
+            List<ProductInOrderDTO> productsDTO = new List<ProductInOrderDTO>(); // Initialize the list
+            Cart cart;
+            Payment payment;
+            Order order = new Order();
+            order.OrderProducts = new List<Product>(); // Initialize the collection
+
+            int total = 0;
+            try
+            {
+                cart = _context.Carts.Include(p => p.ApplicationUser).Include(p => p.ProductsInCart)
+                                    .FirstOrDefault(c => c.CartId == cartId);
+
+                payment = _context.Payment.FirstOrDefault(p => p.PaymentId == paymentId);
+                if (cart != null)
+                {
+                    order.OrderProducts = new List<Product>(); // Initialize the collection
+                    foreach (var item in cart.ProductsInCart)
+                    {
+                        var product = _context.Products.FirstOrDefault(p => p.ProductId == item.ProductId);
+
+                        if (product != null)
+                        {
+                            order.OrderProducts.Add(product);
+
+                            int quantity = item.Quantity;
+                            int? price = product.Price;
+
+                            if (price != null)
+                            {
+                                total += quantity * price.Value;
+                                var productOrderDTO = new ProductInOrderDTO
+                                {
+                                    Name = product.Name,
+                                    ProductId = item.ProductId,
+                                    Quantity = quantity,
+                                    Price = price,
+                                    TotalPrice = quantity * price.Value
+                                };
+                                productsDTO.Add(productOrderDTO);
+                            }
+                        }
+                    }
+
+                    if (payment != null)
+                    {
+                        order.CreatedAt = DateTime.Now;
+                        order.ShippingDate = DateTime.Now.AddDays(3);
+                        order.IsCancelled = false;
+                        order.ApplicationUser = cart.ApplicationUser;
+                        order.ApplicationUserId = cart.ApplicationUserId;
+                        order.payment = payment;
+                        order.PaymentId = payment.PaymentId;
+                        order.Total = total;
+                        _context.Orders.Add(order);
+                        _context.SaveChanges();
+                        newOrderDTO.UserName = order.ApplicationUser.UserName;
+                        newOrderDTO.OrderId = order.OrderId;
+                        newOrderDTO.ApplicationUserId = order.ApplicationUserId;
+                        newOrderDTO.CreatedAt = order.CreatedAt;
+                        newOrderDTO.ShippingDate = order.ShippingDate;
+                        newOrderDTO.Items = productsDTO;
+                        newOrderDTO.Total = total;
+                        newOrderDTO.CardType = payment.CardType;
+                        newOrderDTO.Card_Num = payment.Card_Num;
+                    }
+                }
+
+                return newOrderDTO;
+            }
+            catch (Exception ex) { _logger.LogError(ex, "Can't Fetch Data"); return null; }
+
+        }
+
     }
 }
