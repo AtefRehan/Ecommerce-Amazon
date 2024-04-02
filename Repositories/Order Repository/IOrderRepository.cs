@@ -8,6 +8,7 @@ namespace ECommerce.Repositories.Order_Repository;
 public interface IOrderRepository: IGenericRepository<Order>
 {
     ICollection<OrderDTO> GetOrdersByUserId(string userId);
+    ICollection<OrderDTO> GetOrdersByCartId(int cartid);
     ICollection<OrderDTO> GetOrdersByPaymentId(int paymentId);
     OrderDTO GetOrder(int orderId);
     ICollection<OrderDTO> GetOrders();

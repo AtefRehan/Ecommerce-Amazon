@@ -45,6 +45,12 @@ namespace ECommerce.Controllers
             var result = _orderRepo.GetOrders();
                 return Ok(result);
         }
+        [HttpGet("Cart/{cartId}")]
+        public ActionResult<ICollection<OrderDTO>> GetUserOrders(int cartId)
+        {
+            var result = _orderRepo.GetOrdersByCartId(cartId);
+            return Ok(result);
+        }
 
         [HttpGet("user/{userId}")]
         public ActionResult<ICollection<OrderDTO>> GetUserOrders(string userId)

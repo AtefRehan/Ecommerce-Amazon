@@ -123,6 +123,33 @@ namespace ECommerce.Repositories.Order_Repository
 
             return null;
         }
+        public ICollection<OrderDTO> GetOrdersByCartId(int cartid)
+        {
+            try
+            {
+                var user = _context.Users
+            .Include(u => u.Orders)
+            .FirstOrDefault(u => u.CartId == cartid);
+
+                if (user != null)
+                {
+                    var orders = _context.Orders
+                        .Include(o => o.payment)
+                        .Include(o => o.OrderProducts)
+                        .Where(o => o.ApplicationUserId == user.Id && !o.IsCancelled)
+                        .ToList();
+
+                    return _mapper.Map<List<OrderDTO>>(orders);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to get orders for cart with ID: {cartid}", cartid);
+            }
+
+            return null;
+        }
 
         public ICollection<OrderDTO> GetOrdersByPaymentId(int paymentId)
         {
@@ -159,7 +186,7 @@ namespace ECommerce.Repositories.Order_Repository
                                     .FirstOrDefault(c => c.CartId == cartId);
 
                 payment = _context.Payment.FirstOrDefault(p => p.PaymentId == paymentId);
-                if (cart != null)
+                if (cart != null&& cart.ProductsInCart.Count>0)
                 {
                     order.OrderProducts = new List<Product>(); // Initialize the collection
                     foreach (var item in cart.ProductsInCart)
