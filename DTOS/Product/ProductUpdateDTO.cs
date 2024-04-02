@@ -1,6 +1,6 @@
 ﻿namespace ECommerce.DTOS.Product
 {
-    public class ProductUpdateDTO
+    public record ProductUpdateDTO
     {
         public int productId { get; set; }
         public string Name { get; set; }

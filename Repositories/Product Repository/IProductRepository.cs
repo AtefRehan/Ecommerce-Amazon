@@ -7,7 +7,7 @@ public interface IProductRepository : IGenericRepository<Product>
 {
     public List<Product> GetAllProducts();
     public Product GetProductById(int id);
-    public void UpdateProductById(int id, Product p);
+   // public void UpdateProductById(int id, Product p);
     public void Create(Product _product);
     public void DeleteProductById(int id);
 

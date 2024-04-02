@@ -1,6 +1,7 @@
 using ECommerce.Data;
 using ECommerce.Models;
 using ECommerce.Repositories.Generic_Repository;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Repositories.Product_Repository;
@@ -15,25 +16,17 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
 
     public List<Product> GetAllProducts()
     {
-        return _context.Products.ToList();
+        return _context.Products.Where(a => !a.IsCancelled).ToList();
     }
 
     public Product GetProductById(int id)
     {
-        return _context.Products
+        return _context.Products.Where(a => !a.IsCancelled)
                        .Include(p => p.Supplier)
                        .Include(p => p.SubCategory)
                        .FirstOrDefault(p => p.ProductId == id);
     }
 
-
-    public void UpdateProductById(int id, Product p)
-    {
-        var product = _context.Products.Find(id);
-        // _context.Entry(product).State = EntityState.Modified;
-        _context.Update(product);
-
-    }
     public void Create(Product entity)
     {
 
@@ -43,9 +36,12 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
     public void DeleteProductById(int id)
     {
         var product = _context.Products.Find(id);
-
-        _context.Products.Remove(product);
-        _context.SaveChanges();
+        if (product != null) {
+            product.IsCancelled = true;
+            //_context.Products.Remove(product);
+            _context.SaveChanges();
+        }
+        
     }
 
 
