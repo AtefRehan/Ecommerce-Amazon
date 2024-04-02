@@ -58,7 +58,7 @@ namespace ECommerce.Controllers
                     var payment = mapper.Map<Payment>(p);
                     paymentRepo.Create(payment);
                     paymentRepo.SaveChanges();
-                    return CreatedAtAction("GetById", new { id = payment.PaymentId }, p);
+                    return CreatedAtAction("GetById", new { id = payment.PaymentId }, new { PaymentId = payment.PaymentId, Payment = p });
 
                 }
                 catch (Exception ex)
