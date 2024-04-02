@@ -165,6 +165,7 @@ namespace ECommerce.Controllers
                     // Create a new UserDTO object for the current user
                     var userDTO = new UserDTO
                     {
+                        ApplicationUserId=user.Id,
                         Role = roles.ToList(), // Set user roles
                         Email = user.Email,
                         Name = user.UserName,
