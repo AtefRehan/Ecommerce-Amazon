@@ -179,6 +179,7 @@ namespace ECommerce.Repositories.Order_Repository
                                 var productOrderDTO = new ProductInOrderDTO
                                 {
                                     Name = product.Name,
+                                    Image = product.Image,
                                     ProductId = item.ProductId,
                                     Quantity = quantity,
                                     Price = price,
