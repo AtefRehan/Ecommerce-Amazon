@@ -13,5 +13,5 @@ public interface IOrderRepository: IGenericRepository<Order>
     OrderDTO GetOrder(int orderId);
     ICollection<OrderDTO> GetOrders();
     OrderDTO DeleteOrder(int orderId);
-    CreateOrderDTO CreateOrder(int cartId, int paymentId);
+    OrderDTO CreateOrder(int cartId, int paymentId);
 }

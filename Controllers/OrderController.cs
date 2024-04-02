@@ -52,7 +52,7 @@ namespace ECommerce.Controllers
             return Ok(result);
         }
 
-        [HttpGet("user/{userId}")]
+        [HttpPost("user/{userId}")]
         public ActionResult<ICollection<OrderDTO>> GetUserOrders(string userId)
         {
             var result = _orderRepo.GetOrdersByUserId(userId);

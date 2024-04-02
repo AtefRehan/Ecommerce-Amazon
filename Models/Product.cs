@@ -35,7 +35,7 @@ namespace ECommerce.Models
 
         public virtual SubCategory SubCategory { get; set; }
 
-        public virtual ICollection<Order> ProductOrders { get; set; } = new HashSet<Order>();
+        public virtual ICollection<OrderProduct> ProductOrders { get; set; } = new HashSet<OrderProduct>();
 
         public virtual ICollection<WishProduct> UsersWishList { get; set; } =
         new HashSet<WishProduct>();

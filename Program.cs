@@ -37,7 +37,7 @@ namespace ECommerce
             // Add services to the container.
             builder.Services.AddDbContext<AmazonDB>(option =>
             {
-                option.UseSqlServer(builder.Configuration.GetConnectionString("MariamSQLConnection"));
+                option.UseSqlServer(builder.Configuration.GetConnectionString("IsraaSQLConnection"));
 
             });
             builder.Services.AddAutoMapper(typeof(MappingConfig));
@@ -120,8 +120,6 @@ namespace ECommerce
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddLogging();
-
-
 
             var app = builder.Build();
 
