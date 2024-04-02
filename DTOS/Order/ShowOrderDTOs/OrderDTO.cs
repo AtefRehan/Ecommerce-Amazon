@@ -1,4 +1,6 @@
-﻿namespace ECommerce.DTOS.Order
+﻿using ECommerce.DTOS.Order.CreateOrderDTOS;
+
+namespace ECommerce.DTOS.Order.ShowOrderDTOs
 {
     public record OrderDTO
     {
@@ -8,6 +10,7 @@
         public int Total { get; set; }
         public bool IsCancelled { get; set; }
         public string ApplicationUserId { get; set; }
-        public List<int> OrderProductsID { get; set; }
+        public string CardType { get; set; }
+        public List<ProductInShowOrder> OrderProducts { get; set; }
     }
 }
