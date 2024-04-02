@@ -33,7 +33,9 @@ namespace ECommerce.Repositories.Order_Repository
         {
             try
             {
-                var order = _context.Orders.Where(o => !o.IsCancelled).Include(o => o.OrderProducts).ThenInclude(p=>p.Product).FirstOrDefault(o => o.OrderId == orderId);
+                var order = _context.Orders.Where(o => !o.IsCancelled).Include(o => o.payment)
+                    .Include(o => o.OrderProducts).ThenInclude(p=>p.Product)
+                    .FirstOrDefault(o => o.OrderId == orderId);
                 order.IsCancelled = true;
                 foreach (var item in order.OrderProducts)
                 {
