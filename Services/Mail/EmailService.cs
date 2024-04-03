@@ -28,7 +28,7 @@ public class EmailService : IEmailService
             {
                 Text = emailDto.Html
             },
-            From = { MailboxAddress.Parse(_emailConfig.From) }
+            From = { new MailboxAddress("Amazon", _emailConfig.From) }
         };
         using (var smtp = new SmtpClient())
         {
