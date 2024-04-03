@@ -7,6 +7,6 @@ namespace ECommerce.Repositories.Wish_Repository
     {
         public WishProduct AddProduct(int product_id,string userId);
         public WishProduct RemoveProduct(int product_id, string userId);
-        public IEnumerable<int> GetWishProductsByUserId(string userId);
+        public IEnumerable<Product> GetWishProductsByUserId(string userId);
     }
 }
