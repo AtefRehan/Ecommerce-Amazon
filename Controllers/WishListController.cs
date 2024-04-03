@@ -20,7 +20,7 @@ namespace Ecommerce_Amazon.Controllers
             this.mapper = _mapper;
         }
         [HttpGet]
-        public IActionResult GetByUserId(string userId)
+        public ActionResult<ProductDetailsDTO> GetByUserId(string userId)
         {
             if (userId == null)
             {
@@ -29,7 +29,14 @@ namespace Ecommerce_Amazon.Controllers
             else
             {
                var products =wish.GetWishProductsByUserId(userId);
-                return Ok(products);
+               List<ProductDetailsDTO> wishedProducts = new List<ProductDetailsDTO>();
+                foreach (var item in products)
+                {
+                    var p = mapper.Map<ProductDetailsDTO>(item);
+                    wishedProducts.Add(p);
+                }
+                
+                return Ok(wishedProducts);
             }
         }
         [HttpPost]

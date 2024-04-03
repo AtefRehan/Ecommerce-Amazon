@@ -15,14 +15,22 @@ namespace ECommerce.Repositories.Wish_Repository
             this.context = _context;
         }
 
-        public IEnumerable<int> GetWishProductsByUserId(string userId) 
+        public IEnumerable<Product> GetWishProductsByUserId(string userId) 
         {
-            var productIds = context.Wish
-                            .Where(w => w.UserId == userId)
-                            .Select(w => w.ProductId)
-                            .ToList();
+            var products = context.Products
+                           .Join(context.Wish,
+                                p => p.ProductId,
+                                w => w.ProductId,
+                               (p, w) => new { Product = p, Wish = w })
+                        .Where(j => j.Wish.UserId == userId)
+                        .Select(j => j.Product)
+                        .ToList();
+            //var productIds = context.Wish
+            //                .Where(w => w.UserId == userId)
+            //                .Select(w => w.Product.ProductId)
+            //                .ToList();
 
-            return productIds;
+            return products;
         }
         public  WishProduct AddProduct(int product_id ,string userID)
         {
