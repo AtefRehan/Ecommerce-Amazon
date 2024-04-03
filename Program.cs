@@ -37,7 +37,7 @@ namespace ECommerce
             // Add services to the container.
             builder.Services.AddDbContext<AmazonDB>(option =>
             {
-                option.UseSqlServer(builder.Configuration.GetConnectionString("MariamSQLConnection"));
+                option.UseSqlServer(builder.Configuration.GetConnectionString("AtefSQLConnection"));
 
             });
             builder.Services.AddAutoMapper(typeof(MappingConfig));
@@ -115,6 +115,11 @@ namespace ECommerce
                         ),
                     };
                 });
+
+
+
+            builder.Services.Configure<DataProtectionTokenProviderOptions>(opts =>
+                opts.TokenLifespan = TimeSpan.FromHours(12));
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

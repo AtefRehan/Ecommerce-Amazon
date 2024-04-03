@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using ECommerce.Data;
 using ECommerce.DTO.User;
 using ECommerce.DTOS.User;
@@ -13,10 +14,15 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Data;
+using Azure;
 using ECommerce;
+using ECommerce.DTOS.SendEmail;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using ECommerce.Repositories.Role;
+using ECommerce.Services.MailV;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using ResetPassword = ECommerce.Models.ResetPassword;
 
 namespace ECommerce.Controllers
 {
@@ -30,17 +36,23 @@ namespace ECommerce.Controllers
         private readonly IMapper mapper;
         private readonly IRoleRepository roleRepository;
         private readonly TokenService tokenService;
-        public UserController(AmazonDB _context, IConfiguration _configuration, UserManager<ApplicationUser> _userManager, IMapper _mapper, IRoleRepository _roleRepository, TokenService _tokenService)
+        private readonly IEmailService _emailService;
+
+        public UserController(AmazonDB _context, IConfiguration _configuration,
+            UserManager<ApplicationUser> _userManager, IMapper _mapper, IRoleRepository _roleRepository,
+            TokenService _tokenService, IEmailService emailService)
         {
             this.configuration = _configuration;
             this.userManager = _userManager;
             this.mapper = _mapper;
-            this.context= _context;
+            this.context = _context;
             this.roleRepository = _roleRepository;
             this.tokenService = _tokenService;
+            _emailService = emailService;
         }
 
         #region Register
+
         [HttpPost]
         [Route("Register")]
         public async Task<ActionResult> Register(RegisterDTO registerDTO)
@@ -71,16 +83,22 @@ namespace ECommerce.Controllers
                     {
                         await userManager.AddToRoleAsync(NewUser, "Client");
                     }
-                    catch  { return Ok("Role Not Valied"); }
-                    
+                    catch
+                    {
+                        return Ok("Role Not Valied");
+                    }
+
                     return Ok(NewUser);
                 }
             }
+
             return BadRequest(ModelState);
         }
+
         #endregion
 
         #region Login
+
         [HttpPost]
         [Route("login")]
         public async Task<ActionResult<AuthResponse>> Login(LoginDTO credentials)
@@ -121,14 +139,18 @@ namespace ECommerce.Controllers
                     Email = user.Email,
                     IsAdmin = roleRepository.IsAdmin(user.Id).Result,
                     Token = accessToken,
-                }); 
+                });
             }
+
             return BadRequest(ModelState);
         }
+
         #endregion
 
         #region SignOut
+
         private readonly HashSet<string> _blacklistedTokens = new HashSet<string>();
+
         [HttpGet]
         [Route("LogOut")]
         public ActionResult Logout()
@@ -141,6 +163,7 @@ namespace ECommerce.Controllers
         #endregion
 
         #region All Users
+
         [HttpGet]
         [Route("Accounts")]
         public async Task<ActionResult> GetAllUsers()
@@ -165,7 +188,7 @@ namespace ECommerce.Controllers
                     // Create a new UserDTO object for the current user
                     var userDTO = new UserDTO
                     {
-                        ApplicationUserId=user.Id,
+                        ApplicationUserId = user.Id,
                         Role = roles.ToList(), // Set user roles
                         Email = user.Email,
                         Name = user.UserName,
@@ -186,7 +209,69 @@ namespace ECommerce.Controllers
                 return StatusCode(500, "An error occurred while retrieving user data.");
             }
         }
+
         #endregion
 
+        [HttpPost]
+        [Route("forgot-password")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword([Required] string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                var token = await userManager.GeneratePasswordResetTokenAsync(user);
+                var forgotPasswordLink = Url.Action(nameof(ResetPassword), "User", new { token, email = user.Email },
+                    Request.Scheme);
+                var message = new SendEmailDto()
+                    { Html = "Click the link below to change your Password , If you didn't request a password change please ignore this message !              "
+                             +forgotPasswordLink, Subject = "Password Reset Link", To = user.Email };
+                _emailService.SendEmail(message);
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
+        [HttpGet("reset-password")]
+        public async Task<IActionResult> ResetPassword(string token , string email)
+        {
+            var model = new ResetPassword() { Token = token, Email = email };
+            return Ok(new {model});
+
+        }
+        
+        
+        
+        [HttpPost]
+        [Route("reset-password")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ResetPassword resetPassword)
+        {
+            var user = await userManager.FindByEmailAsync(resetPassword.Email);
+            if (user != null)
+            {
+
+                var resetPasswordResult =
+                  await userManager.ResetPasswordAsync(user, resetPassword.Token, resetPassword.Password);
+
+
+                if (!resetPasswordResult.Succeeded)
+                {
+                    foreach (var error in resetPasswordResult.Errors)
+                    {
+                        ModelState. AddModelError(error.Code, error.Description);
+                    }
+                    // return Ok(ModelState);
+                    return BadRequest(ModelState);
+                }
+
+                return Ok("Password Has been changed !");
+                
+            }
+
+            return BadRequest();
+        }
+        
     }
 }
