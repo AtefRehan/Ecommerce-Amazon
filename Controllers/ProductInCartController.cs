@@ -115,11 +115,12 @@ namespace ECommerce.Controllers
             try
             {
                 var productInCart = _productInCartRepo.GetById(productInCartId);
+                var product = _db.Products.Find(productInCart.ProductId);
 
                 if (productInCart == null)
                     return NotFound();
-
-                productInCart.Quantity += 1;
+                if (productInCart.Quantity < product.Stock)
+                { productInCart.Quantity += 1; }
 
                 _productInCartRepo.Update(productInCart);
                 _productInCartRepo.SaveChanges();

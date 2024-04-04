@@ -15,7 +15,6 @@ using ECommerce.Repositories.Wish_Repository;
 using ECommerce.Services;
 using ECommerce.Services.MailV;
 using Microsoft.AspNetCore.Identity;
-// using ECommerce.Repositories.Product;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using System.Text;
@@ -37,7 +36,7 @@ namespace ECommerce
             // Add services to the container.
             builder.Services.AddDbContext<AmazonDB>(option =>
             {
-                option.UseSqlServer(builder.Configuration.GetConnectionString("AtefSQLConnection"));
+                option.UseSqlServer(builder.Configuration.GetConnectionString("israaSQLConnection"));
 
             });
             builder.Services.AddAutoMapper(typeof(MappingConfig));
