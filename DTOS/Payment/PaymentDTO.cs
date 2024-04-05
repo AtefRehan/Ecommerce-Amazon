@@ -9,7 +9,7 @@ namespace ECommerce.DTOS.Payment
     public record PaymentDTO
     {
         public int PaymentId { get; set; }
-        public int Card_Num { get; set; }
+        public string Card_Num { get; set; }
         public string CardType { get; set; }
         [Column(TypeName = "Date")]
         public DateTime ExpireDate { get; set; }
