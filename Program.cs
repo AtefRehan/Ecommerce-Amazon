@@ -36,7 +36,7 @@ namespace ECommerce
             // Add services to the container.
             builder.Services.AddDbContext<AmazonDB>(option =>
             {
-                option.UseSqlServer(builder.Configuration.GetConnectionString("israaSQLConnection"));
+                option.UseSqlServer(builder.Configuration.GetConnectionString("DinaSQLConnection"));
 
             });
             builder.Services.AddAutoMapper(typeof(MappingConfig));
