@@ -25,6 +25,7 @@ namespace ECommerce.Data
             .HasKey(p => p.Id);
    
             base.OnModelCreating(builder);
+
             #region Add Master Admin 
             var hasher = new PasswordHasher<ApplicationUser>();
 

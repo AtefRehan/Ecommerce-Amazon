@@ -95,15 +95,15 @@ namespace ECommerce.Migrations
                             Id = "80c8b6b1-e2b6-45e8-b044-8f2178a90111",
                             AccessFailedCount = 0,
                             CartId = 1,
-                            ConcurrencyStamp = "0eea46d1-55b9-4d2b-b708-a3ce22907ee3",
+                            ConcurrencyStamp = "0095c986-0e7a-4b68-8607-a85b050f0fdc",
                             Email = "admin@amazon.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@AMAZON.COM",
                             NormalizedUserName = "ADMIN@AMAZON.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHCgFkSNOD37P/B5bdUWsaM5P83Q9jwWWBuF9wdUziyMQA4hE78wyY5cMb8XyjEqwg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEF1yYc9+hQbqUPIegsonh77yAgEfPw+RZDxlTeT6eZxdAjzLLQqh+TFOzMcKvquIcg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "90627934-d8f5-49e5-8e22-9abf24cc81d5",
+                            SecurityStamp = "ec695da3-c13e-4c86-8236-1c370e457b9f",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -226,8 +226,10 @@ namespace ECommerce.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("Card_Num")
-                        .HasColumnType("int");
+                    b.Property<string>("Card_Num")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime?>("ExpireDate")
                         .HasColumnType("Date");
@@ -407,13 +409,13 @@ namespace ECommerce.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "52342cdd-1cc8-4ae8-8e41-a4b78ed0a5a9",
+                            Id = "af47cffd-60e9-442f-ad06-f8839359bce6",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "3abdce32-3740-4311-8f9c-7e62e8f45924",
+                            Id = "e9c645a0-38b1-47cc-8554-298fb3ff2a8b",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         });
@@ -509,7 +511,7 @@ namespace ECommerce.Migrations
                         new
                         {
                             UserId = "80c8b6b1-e2b6-45e8-b044-8f2178a90111",
-                            RoleId = "52342cdd-1cc8-4ae8-8e41-a4b78ed0a5a9"
+                            RoleId = "af47cffd-60e9-442f-ad06-f8839359bce6"
                         });
                 });
 

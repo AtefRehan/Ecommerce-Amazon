@@ -9,7 +9,8 @@ namespace ECommerce.Models
         [Key]
         public int PaymentId { get; set; }
 
-        public int? Card_Num { get; set; }
+        [MaxLength(20)]
+        public string Card_Num { get; set; }
 
         [Required]
         [StringLength(50)]
