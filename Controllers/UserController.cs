@@ -212,26 +212,55 @@ namespace ECommerce.Controllers
 
         #endregion
 
+        // [HttpPost]
+        // [Route("forgot-password")]
+        // [AllowAnonymous]
+        // public async Task<IActionResult> ForgotPassword([Required] string email)
+        // {
+        //     var user = await userManager.FindByEmailAsync(email);
+        //     if (user != null)
+        //     {
+        //         var token = await userManager.GeneratePasswordResetTokenAsync(user);
+        //         var forgotPasswordLink = Url.Action(nameof(ResetPassword), "User", new { token, email = user.Email },
+        //             Request.Scheme);
+        //         var message = new SendEmailDto()
+        //             { Html = "Click the link below to change your Password , If you didn't request a password change please ignore this message !              "
+        //                      +forgotPasswordLink, Subject = "Password Reset Link", To = user.Email };
+        //         _emailService.SendEmail(message);
+        //         return Ok();
+        //     }
+        //
+        //     return BadRequest();
+        // }
+        
+        
+        
         [HttpPost]
         [Route("forgot-password")]
         [AllowAnonymous]
-        public async Task<IActionResult> ForgotPassword([Required] string email)
+        public async Task<ActionResult<ResetPassword>> ForgotPassword([Required] string email)
         {
             var user = await userManager.FindByEmailAsync(email);
             if (user != null)
             {
                 var token = await userManager.GeneratePasswordResetTokenAsync(user);
-                var forgotPasswordLink = Url.Action(nameof(ResetPassword), "User", new { token, email = user.Email },
-                    Request.Scheme);
+                // var forgotPasswordLink = Url.Action(nameof(ResetPassword), "User", new { token, email = user.Email },
+                    // Request.Scheme);
+                    var forgotPasswordLink = "http://localhost:4200/signup";
                 var message = new SendEmailDto()
-                    { Html = "Click the link below to change your Password , If you didn't request a password change please ignore this message !              "
-                             +forgotPasswordLink, Subject = "Password Reset Link", To = user.Email };
+                {
+                    Html = "Click the link below to change your Password , If you didn't request a password change please ignore this message !" + forgotPasswordLink,
+                    Subject = "Password Reset Link",
+                    To = user.Email
+                };
                 _emailService.SendEmail(message);
-                return Ok();
-            }
+                var response = new ResetPassword() { Token = token, Email = user.Email };
+                return response;
+            }   
 
             return BadRequest();
-        }
+        } 
+
 
         [HttpGet("reset-password")]
         public async Task<IActionResult> ResetPassword(string token , string email)
