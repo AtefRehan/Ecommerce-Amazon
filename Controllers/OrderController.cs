@@ -25,6 +25,7 @@ namespace ECommerce.Controllers
             _orderRepo = orderRepo;
         }
 
+
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<OrderDTO>> Delete(int id)
         {
@@ -39,12 +40,15 @@ namespace ECommerce.Controllers
             }
         }
 
+
         [HttpGet]
         public ActionResult<ICollection<OrderDTO>> GetAll()
         {
             var result = _orderRepo.GetOrders();
                 return Ok(result);
         }
+
+
         [HttpGet("Cart/{cartId}")]
         public ActionResult<ICollection<OrderDTO>> GetUserOrders(int cartId)
         {
@@ -52,12 +56,14 @@ namespace ECommerce.Controllers
             return Ok(result);
         }
 
+
         [HttpPost("user/{userId}")]
         public ActionResult<ICollection<OrderDTO>> GetUserOrders(string userId)
         {
             var result = _orderRepo.GetOrdersByUserId(userId);
             return Ok(result);
         }
+
 
         [HttpGet("{orderId:int}")]
         public ActionResult<OrderDTO> GetOrder(int orderId)
@@ -73,6 +79,7 @@ namespace ECommerce.Controllers
             }
         }
 
+
         [HttpGet("payment/{paymentId:int}")]
         public ActionResult<ICollection<OrderDTO>> GetPaymentOrders(int paymentId)
         {
@@ -86,6 +93,7 @@ namespace ECommerce.Controllers
                 return NotFound();
             }
         }
+
 
         [HttpPost("CreateOrder/")]
         public ActionResult<ICollection<OrderDTO>> CreateOrder(CreateOrderInputDTO inputDTO)
