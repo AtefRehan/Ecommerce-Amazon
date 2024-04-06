@@ -1,7 +1,6 @@
 using ECommerce.Data;
 using ECommerce.Models;
 using ECommerce.Repositories.Product_Repository;
-// using ECommerce.Repositories.Product;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +26,7 @@ namespace ECommerce.Controllers
             this.mapper = _mapper;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAll()
+        public ActionResult<IEnumerable<ProductDTO>> GetAll()
         {
             try 
             {
@@ -49,7 +48,7 @@ namespace ECommerce.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<ProductDetailsDTO>> GetProductById(int id)
+        public ActionResult<ProductDetailsDTO> GetProductById(int id)
         {
             var target_product = product.GetById(id);
             if(target_product == null)
@@ -63,7 +62,7 @@ namespace ECommerce.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> Add(ProductCreateDTO p)
+        public ActionResult Add(ProductCreateDTO p)
         {
             if (p == null)
             {
@@ -82,7 +81,7 @@ namespace ECommerce.Controllers
 
         [HttpPut("{id}")]
 
-        public async Task<ActionResult> Edit(ProductUpdateDTO p, int id)
+        public ActionResult Edit(ProductUpdateDTO p, int id)
         {
 
             if (p == null) return BadRequest();
@@ -101,7 +100,7 @@ namespace ECommerce.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public ActionResult Delete(int id)
         {
             product.DeleteProductById(id);
             return Ok();

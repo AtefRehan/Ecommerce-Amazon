@@ -38,7 +38,6 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
         var product = _context.Products.Find(id);
         if (product != null) {
             product.IsCancelled = true;
-            //_context.Products.Remove(product);
             _context.SaveChanges();
         }
         

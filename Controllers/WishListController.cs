@@ -29,18 +29,25 @@ namespace Ecommerce_Amazon.Controllers
             else
             {
                var products =wish.GetWishProductsByUserId(userId);
-               List<ProductDetailsDTO> wishedProducts = new List<ProductDetailsDTO>();
-                foreach (var item in products)
+                if (products == null)
                 {
-                    var p = mapper.Map<ProductDetailsDTO>(item);
-                    wishedProducts.Add(p);
+                    return NotFound();
                 }
-                
-                return Ok(wishedProducts);
+                else {
+                    List<ProductDetailsDTO> wishedProducts = new List<ProductDetailsDTO>();
+                    foreach (var item in products)
+                    {
+                        var p = mapper.Map<ProductDetailsDTO>(item);
+                        wishedProducts.Add(p);
+                    }
+
+                    return Ok(wishedProducts);
+                }
+                 
             }
         }
         [HttpPost]
-        public async Task<ActionResult> Add(int productId, string userID)
+        public ActionResult Add(int productId, string userID)
         {
             if (productId != null && userID != null) 
             {

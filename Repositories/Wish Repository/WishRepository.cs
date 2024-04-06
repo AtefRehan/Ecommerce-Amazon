@@ -17,7 +17,9 @@ namespace ECommerce.Repositories.Wish_Repository
 
         public IEnumerable<Product> GetWishProductsByUserId(string userId) 
         {
-            var products = context.Products
+            if (userId != null)
+            {
+                var products = context.Products
                            .Join(context.Wish,
                                 p => p.ProductId,
                                 w => w.ProductId,
@@ -25,12 +27,14 @@ namespace ECommerce.Repositories.Wish_Repository
                         .Where(j => j.Wish.UserId == userId)
                         .Select(j => j.Product)
                         .ToList();
-            //var productIds = context.Wish
-            //                .Where(w => w.UserId == userId)
-            //                .Select(w => w.Product.ProductId)
-            //                .ToList();
 
-            return products;
+                return products;
+
+            }
+            else
+            {
+                return null;
+            }
         }
         public  WishProduct AddProduct(int product_id ,string userID)
         {
@@ -47,14 +51,16 @@ namespace ECommerce.Repositories.Wish_Repository
                     User = user,
                     UserId = userID
                 };
-               // context.Wish.Include(p => p.Product).Include(p => p.Product);//.Add(wish_product);
+               
                 context.Wish.Add(wish_product);
-                //user.WishList.Add(wish_product);
                 context.SaveChanges();
                 return wish_product;
             }
-
-            return null;
+            else
+            {
+                return null;
+            }
+            
         }
 
         public WishProduct RemoveProduct(int product_id, string userID)
@@ -64,11 +70,11 @@ namespace ECommerce.Repositories.Wish_Repository
 
             if (wishToDelete != null)
             {
-
                 context.Wish.Remove(wishToDelete);
                 context.SaveChanges();
+                return wishToDelete;
             }
-            return wishToDelete;
+            return null ;
 
         }
 
