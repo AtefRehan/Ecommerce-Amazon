@@ -95,15 +95,15 @@ namespace ECommerce.Migrations
                             Id = "80c8b6b1-e2b6-45e8-b044-8f2178a90111",
                             AccessFailedCount = 0,
                             CartId = 1,
-                            ConcurrencyStamp = "0095c986-0e7a-4b68-8607-a85b050f0fdc",
+                            ConcurrencyStamp = "5e08e25b-c020-476a-ada4-4b7fe7e70b32",
                             Email = "admin@amazon.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@AMAZON.COM",
                             NormalizedUserName = "ADMIN@AMAZON.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEF1yYc9+hQbqUPIegsonh77yAgEfPw+RZDxlTeT6eZxdAjzLLQqh+TFOzMcKvquIcg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEN47Ps9zg2mBpq1bfJk3X0hDdoHefj0ccczzrfu0K230oE3V65cOjSf8cKc3DJsjOA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ec695da3-c13e-4c86-8236-1c370e457b9f",
+                            SecurityStamp = "7458260d-5e90-4f51-ab78-ce54a666ea21",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -409,13 +409,13 @@ namespace ECommerce.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "af47cffd-60e9-442f-ad06-f8839359bce6",
+                            Id = "b4552783-75f3-44a4-be4b-79d66b5128ca",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "e9c645a0-38b1-47cc-8554-298fb3ff2a8b",
+                            Id = "6e439d24-36ae-4054-8db7-4af022424b17",
                             Name = "Client",
                             NormalizedName = "CLIENT"
                         });
@@ -511,7 +511,7 @@ namespace ECommerce.Migrations
                         new
                         {
                             UserId = "80c8b6b1-e2b6-45e8-b044-8f2178a90111",
-                            RoleId = "af47cffd-60e9-442f-ad06-f8839359bce6"
+                            RoleId = "b4552783-75f3-44a4-be4b-79d66b5128ca"
                         });
                 });
 

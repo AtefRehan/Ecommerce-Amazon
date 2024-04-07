@@ -50,7 +50,8 @@ namespace ECommerce.Controllers
         [HttpGet("{id:int}")]
         public ActionResult<ProductDetailsDTO> GetProductById(int id)
         {
-            var target_product = product.GetById(id);
+            if (id == null) return BadRequest();
+            var target_product = product.GetProductById(id);
             if(target_product == null)
             {
                 return NotFound();
@@ -85,7 +86,7 @@ namespace ECommerce.Controllers
         {
 
             if (p == null) return BadRequest();
-            if (p.productId != id) return NotFound();
+            if (p.productId != id) return BadRequest(); 
             if(!ModelState.IsValid) return BadRequest();
             var updated = mapper.Map<Product>(p);
             if(updated.IsCancelled == true) return NotFound();
