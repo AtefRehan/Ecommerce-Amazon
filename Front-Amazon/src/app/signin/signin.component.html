@@ -1,0 +1,169 @@
+<!--
+<div class="flex flex-col">
+  <div class="flex flex-col h-screen items-center w-full p-2 " *ngIf="errorMessage==null">
+    <div class="flex mb-2 ">
+      <img class="w-32 mt-4" src="../../assets/amazon2.png"/>
+    </div>
+
+    <div *ngIf="isLoginExist" class="flex flex-col mb-20 mt-5 flex-grow shadow-sm w-96 p-8  rounded-xl" style="width: 650px;">
+      <div class="flex h-full w-full text-center justify-center  text-3xl font-Nunito mb-5 text-black">
+        <h1>
+          <u style="color: green; font-size: larger;">{{isLoginExist}}</u>
+           You Are Already Signed in <i class="fa-solid fa-thumbs-up"></i></h1>
+      </div>
+    </div>
+
+    <div *ngIf="!isTokenExist"
+      class="mt-5 shadow-sm w-96 p-8  rounded-xl sm:border" style="height: 355px;">
+      <div class="flex text-3xl font-Nunito mb-5">
+        <h1>Sign in</h1>
+      </div>
+      <form [formGroup]="myForm" (ngSubmit)="onsubmit()" class="flex flex-col text-sm  justify-evenly">
+        <div class="flex flex-col my-1">
+          <label class="font-extrabold " for="email">E-mail address</label>
+          <input class="border rounded-md h-8 p-2" type="text" id="email" formControlName="email"
+            placeholder="Enter your email here" />
+          <div *ngIf="myForm.get('email')?.invalid && myForm.get('email')?.touched" class="text-red-500 mt-1 text-xs">
+            Email is required</div>
+        </div>
+
+        <button [hidden]="buttonClicked" [disabled]="!myForm.valid"
+          class="bg-yellow-300 rounded-lg mx-1 hover:bg-yellow-400  p-2 mt-5"
+          (click)="onContinueClicked()">Continue</button>
+        <button [hidden]="!buttonClicked" class="bg-yellow-300 rounded-lg mx-1 hover:bg-yellow-400  p-2 mt-5"><i
+            class="fa-solid fa-spinner"></i></button>
+      </form>
+
+
+      <div class="h-48 justify-evenly flex flex-col ">
+        <div class="flex text-xs mt-3">
+          <p>By continuing, you agree to Amazon's <a class="text-blue-600" href="">Conditions of Use</a> and <a  class="text-blue-600" href="">Privacy Notice.</a></p>
+        </div>
+        <div class="flex text-sm mt-2">
+          <a  class="text-blue-600" href=""><i class="fa-solid fa-circle-arrow-right"></i> Need Help?</a>
+        </div>
+      <div style="margin-top: 50px;">
+        <div class="flex flex-col text-sm">
+          <div class="flex border-b text-sm " >
+
+---------------------------
+              <span> New to Amazon? </span>
+---------------------------
+
+            </div>
+
+            <a routerLink="/signup" class="flex justify-center mt-3">
+              <button
+                class="border-b rounded-lg hover:scale-105 hover:text-yellow-500 font-bold ease-in-out duration-1000 " style="background-color: beige; width: 80%; height: 30px;">
+                Create your Amazon account</button>
+            </a>
+        </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="h-screen w-screen flex  items-center justify-center bg-black bg-opacity-20" *ngIf="errorMessage!=null">
+    <div class="flex flex-col p-10 w-96 border shadow-md hover:shadow-lg z-50 bg-white items-center ">
+      <div class="text-center font-bold text-lg mb-5 duration-1000 animate-pulse">{{errorMessage}}</div>
+      <button class="rounded-lg p-4 border bg-yellow-400 hover:bg-yellow-500 hover:scale-105 ease-in-out duration-1000"
+        (click)="errorGone()"> Continue </button>
+    </div>
+  </div>
+
+</div>
+ -->
+
+
+
+
+
+    <div *ngIf="isLoginExist" class="flex flex-col mb-20 mt-5 flex-grow shadow-sm w-96 p-8  rounded-xl" style="width: 650px;margin: auto;height: 300px;">
+      <div class="flex h-full w-full text-center justify-center  text-3xl font-Nunito mb-5 text-black">
+        <h1><u style="color: green; font-size: larger;">{{isTokenExist}}</u> You Are Already Signed in <i class="fa-solid fa-thumbs-up"></i></h1>
+      </div>
+    </div>
+
+
+<div>
+  <div *ngIf="!isLoginExist" class="flex flex-col h-full">
+    <div class="flex flex-col h-screen items-center w-full p-2 " *ngIf="errorMessage==null">
+      <div class="flex mb-2 ">
+        <img class="w-32 mt-4" src="../../assets/amazon2.png"/>
+      </div>
+  <div>
+    <div
+      class="flex flex-col mb-20 mt-5 flex-grow shadow-sm w-96 p-8  rounded-xl sm:border">
+      <div class="flex text-3xl font-Nunito mb-5">
+        <h1>Sign in</h1>
+      </div>
+
+      <form [formGroup]="myForm" (ngSubmit)="login()" class="flex flex-col text-sm justify-evenly">
+        <div class="flex flex-col my-1">
+          <label class="font-extrabold" for="email">E-mail address</label>
+          <input formControlName="email" class="border rounded-md h-8 p-2" type="email" placeholder="Email">
+
+          <div *ngIf="myForm.get('email')?.invalid && myForm.get('email')?.touched" class="text-red-500 mt-1 text-xs">
+            Email is required
+          </div>
+        </div>
+
+
+        <div class="flex flex-col">
+          <label class="font-extrabold" for="password">Enter Password</label>
+          <input formControlName="password" class="border rounded-md h-8 p-2" type="password" placeholder="Password">
+
+          <div *ngIf="myForm.get('password')?.invalid && myForm.get('password')?.touched" class="text-red-500 mt-1 text-xs">
+            Password format: Consist of 8 characters, 1 special character, 1 capital letter, 1 number
+          </div>
+        </div>
+
+        <button [disabled]="!myForm.valid" class="bg-yellow-300 rounded-lg mx-1 hover:bg-yellow-400 p-2 mt-5"
+          type="submit">Continue</button>
+      </form>
+
+      <div class="h-48 justify-evenly flex flex-col ">
+        <div class="flex text-xs mt-3">
+          <p>By continuing, you agree to Amazon's <a class="text-blue-600" href="">Conditions of Use</a> and <a  class="text-blue-600" href="">Privacy Notice.</a></p>
+        </div>
+        <div class=" text-sm mt-2">
+          <button routerLink="/forgetpass" class="text-blue-600 m-2" ><i class="fa-solid fa-circle-arrow-right"></i> If You Forget Password Click Here?</button><br>
+          <a  class="text-blue-600 m-2" href=""><i class="fa-solid fa-circle-arrow-right"></i> Need Help?</a>
+        </div>
+        <div class="flex border-b text-sm">
+        </div>
+        <div class="flex flex-col text-sm ">
+
+          <a routerLink="/signup" class="flex h-10 mt-5 p-2 justify-center">
+            <button
+              class="border-b rounded-lg hover:scale-105 hover:text-yellow-500 font-bold ease-in-out duration-1000 ">
+              Create your Amazon account</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="h-screen w-screen flex  items-center justify-center bg-black bg-opacity-20" *ngIf="errorMessage!=null">
+    <div class="flex flex-col p-10 w-96 border shadow-md hover:shadow-lg z-50 bg-white items-center ">
+      <div class="text-center font-bold text-lg mb-5 duration-1000 animate-pulse">{{errorMessage}}</div>
+      <button class="rounded-lg p-4 border bg-yellow-400 hover:bg-yellow-500 hover:scale-105 ease-in-out duration-1000"
+        (click)="errorGone()"> Continue </button>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+<!-- // showMessage(message: string): void {
+  //   this.snackbar.open(message, 'Close', {
+  //     duration: 3000, // Duration in milliseconds (3 seconds in this case)
+  //     verticalPosition: 'top', // Position of the snackbar
+  //     horizontalPosition: 'center', // Position of the snackbar
+  //   });
+  // }
+  // this.showMessage('Login Successful'); -->

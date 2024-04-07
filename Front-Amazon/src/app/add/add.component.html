@@ -1,0 +1,162 @@
+<!--
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label>Name</label>
+    <input formControlName="name" type="text" class="form-control" placeholder="Username" name="name">
+  </div>
+  @if(getIsError("name","required")){
+  <span class="text-danger">Name is required</span>
+  }
+  @if(productForm.controls['name'].dirty&&productForm.controls['name'].touched &&
+  productForm.controls['name'].errors?.['minlength']){
+  <span class="text-danger">Minumum 3 chars</span>
+  }
+  <div class="form-group">
+    <label>Price</label>
+    <input formControlName="price" type="number" class="form-control" placeholder="Price" name="price">
+  </div>
+
+  @if(getIsError("price","required")){
+  <span class="text-danger">Name is required</span>
+  }
+
+  <div class="form-group">
+    <label>imgURL</label>
+    <input formControlName="imgURL" type="text" class="form-control" placeholder="Image url" name="imgURL">
+  </div>
+  <select formControlName="categoryID" placeholder="categoryID" name="categoryID">
+    <option value=1>Chairs</option>
+    <option value=2>Tables</option>
+  </select>
+
+  <div class="form-group">
+    <label>description</label>
+    <input formControlName="description" type="text" class="form-control" placeholder="description" name="description">
+  </div>
+
+  <div class="form-group">
+    <label>Discount</label>
+    <input formControlName="discount" type="text" class="form-control" placeholder="discount" name="discount">
+  </div>
+
+  <div class="form-group">
+    <label>matrial</label>
+    <input formControlName="matrial" type="text" class="form-control" placeholder="matrial" name="matrial">
+  </div>
+  <div class="form-group">
+    <label>quantity</label>
+    <input formControlName="quantity" type="number" class="form-control" placeholder="description" name="quantity">
+  </div>
+  <button class="btn btn-primary my-3" [disabled]="productForm.invalid">Add product</button>
+</form> -->
+
+
+
+
+<!-- <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label>Name</label>
+    <input formControlName="name" type="text" class="form-control" placeholder="Username" name="name">
+    <span *ngIf="getIsError('name', 'required')" class="text-danger">Name is required</span>
+    <span *ngIf="productForm.controls['name'].dirty && productForm.controls['name'].touched &&
+                productForm.controls['name'].errors?.['minlength']" class="text-danger">Minimum 3 characters</span>
+  </div>
+
+  <div class="form-group">
+    <label>Price</label>
+    <input formControlName="price" type="number" class="form-control" placeholder="Price" name="price">
+    <span *ngIf="getIsError('price', 'required')" class="text-danger">Price is required</span>
+  </div>
+
+  <div class="form-group">
+    <label>Image URL</label>
+    <input formControlName="imgURL" type="text" class="form-control" placeholder="Image URL" name="imgURL">
+  </div> -->
+    <!-- Error handling for imgURL -->
+    <!-- Add error handling if necessary -->
+
+  <!-- <div class="form-group">
+    <label>Category</label>
+    <select formControlName="categoryID" class="form-control" name="categoryID">
+      <option value="1">Chairs</option>
+      <option value="2">Tables</option>
+    </select>
+  </div> -->
+
+  <!-- <div class="form-group">
+    <label>Description</label>
+    <input formControlName="description" type="text" class="form-control" placeholder="Description" name="description">
+  </div> -->
+    <!-- Error handling for description -->
+    <!-- Add error handling if necessary -->
+
+  <!-- <div class="form-group">
+    <label>Discount</label>
+    <input formControlName="discount" type="text" class="form-control" placeholder="Discount" name="discount">
+  </div> -->
+    <!-- Error handling for discount -->
+    <!-- Add error handling if necessary -->
+
+  <!-- <div class="form-group">
+    <label>Material</label>
+    <input formControlName="matrial" type="text" class="form-control" placeholder="Material" name="matrial">
+  </div> -->
+    <!-- Error handling for matrial -->
+    <!-- Add error handling if necessary -->
+<!--
+  <div class="form-group">
+    <label>Quantity</label>
+    <input formControlName="quantity" type="number" class="form-control" placeholder="Quantity" name="quantity">
+  </div> -->
+    <!-- Error handling for quantity -->
+    <!-- Add error handling if necessary -->
+
+  <!-- <button class="btn btn-primary my-3" [disabled]="productForm.invalid">Add product</button>
+</form> -->
+
+
+
+
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="w-75" style="margin: auto;">
+  <div class="my-3">
+    <label for="name">Name:</label>
+    <input type="text" class="form-control border-5" formControlName="name" id="name">
+  </div>
+  <div class="my-3">
+    <label for="price">Price:</label>
+    <input type="number" class="form-control border-5" formControlName="price" id="price">
+  </div>
+  <div class="my-3">
+    <label for="stock">Stock:</label>
+    <input type="number" class="form-control border-5" formControlName="stock" id="stock">
+  </div>
+  <div class="my-3">
+    <label for="weight">Weight:</label>
+    <input type="number" class="form-control border-5" formControlName="weight" id="weight">
+  </div>
+  <div class="my-3">
+    <label for="description">Description:</label>
+    <textarea formControlName="description" class="form-control border-5" id="description"></textarea>
+  </div>
+  <div class="my-3">
+    <label for="category">Category:</label>
+    <input type="text" class="form-control border-5" formControlName="category" id="category">
+  </div>
+  <div class="my-3">
+    <label for="image">Image:</label>
+    <input type="text" class="form-control border-5" formControlName="image" id="image">
+  </div>
+  <div class="my-3">
+    <label for="supplierId">Supplier ID:</label>
+    <input type="number" class="form-control border-5" formControlName="supplierId" id="supplierId">
+  </div>
+  <div class="my-3">
+    <label for="subCategoryId">Subcategory ID:</label>
+    <input type="number" class="form-control border-5" formControlName="subCategoryId" id="subCategoryId">
+  </div>
+  <button type="submit" class="btn btn-primary my-4 text-black" [disabled]="productForm.invalid">Create Product</button>
+</form>
+
+
+
+

@@ -1,0 +1,58 @@
+.item {
+  position: relative;
+  bottom: 50px;
+}
+
+.shop-section {
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  position: relative;
+  margin-top: -200px;
+}
+
+.box {
+  height: 45%;
+  width: 50%;
+  max-width: 480px;
+  margin: 15px;
+  background-color: rgba(79, 60, 60, 0.762);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 25px;
+  transition: transform 0.6s;
+  overflow: hidden;
+}
+
+.box:hover {
+  transform: translateY(-12px);
+}
+
+.box-img {
+  margin: 25px;
+  height: 75%;
+  background-size: cover;
+  border-radius: 15px;
+}
+
+.shop-section p {
+  color: #007185;
+}
+
+@media (max-width: 768px) {
+  .box {
+    width: 45%;
+  }
+}
+
+@media (max-width: 576px) {
+  .box {
+    width: 90%;
+    margin: 10px auto;
+  }
+}

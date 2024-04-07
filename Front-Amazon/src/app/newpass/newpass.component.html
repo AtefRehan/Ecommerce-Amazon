@@ -1,0 +1,54 @@
+<div>
+  <div class="flex flex-col h-screen items-center w-full p-2 ">
+    <div class="flex mb-2 ">
+      <img class="w-32 mt-4" src="../../assets/amazon2.png"/>
+    </div>
+    <div>
+      <div class="flex flex-col mb-20 mt-5 flex-grow shadow-sm w-96 p-8  rounded-xl sm:border">
+        <div class="flex text-3xl font-Nunito mb-5">
+          <h1>Write your New password</h1>
+        </div>
+
+        <form class="flex flex-col text-sm justify-evenly" (ngSubmit)="resetPassword()" #resetForm="ngForm">
+          <div class="flex flex-col my-1">
+            <label class="font-extrabold" for="password">New password</label>
+            <input  class="border rounded-md h-8 p-2" type="password" id="password" name="password" required [(ngModel)]="password"><br>
+
+
+            <div *ngIf="resetForm.controls['password'].invalid && resetForm.controls['password'].touched" class="text-red-500 mt-1 text-xs">
+              New Password is required
+            </div>
+          </div>
+          <div class="flex flex-col my-1">
+            <label class="font-extrabold" for="confirmPassword">Confirm New Password</label>
+            <input class="border rounded-md h-8 p-2" type="password" id="confirmPassword" name="confirmPassword" required [(ngModel)]="confirmPassword"><br>
+
+            <div *ngIf="resetForm.controls['confirmPassword'].invalid && resetForm.controls['confirmPassword'].touched" class="text-red-500 mt-1 text-xs">
+              Confirmation is required
+            </div>
+          </div>
+          <button [disabled]="resetForm.invalid" class="bg-yellow-300 rounded-lg mx-1 hover:bg-yellow-400 p-2 mt-5" type="submit">Continue</button>
+        </form>
+
+        <div class="h-48 justify-evenly flex flex-col ">
+          <div class="flex text-xs mt-3">
+            <p>By continuing, you agree to Amazon's <a class="text-blue-600" href="">Conditions of Use</a> and <a  class="text-blue-600" href="">Privacy Notice.</a></p>
+          </div><div class="flex text-sm mt-2">
+            <button  class="text-blue-600" routerLink="/signin"><i class="fa-solid fa-circle-arrow-right"></i> Go to Sign In</button>
+          </div>
+          <div class="flex text-sm mt-2">
+            <a  class="text-blue-600" href=""><i class="fa-solid fa-circle-arrow-right"></i> Need Help?</a>
+          </div>
+          <div class="flex border-b text-sm">
+          </div>
+          <div class="flex flex-col text-sm ">
+            <a routerLink="/signup" class="flex h-10 mt-5 p-2 justify-center">
+              <button class="border-b rounded-lg hover:scale-105 hover:text-yellow-500 font-bold ease-in-out duration-1000 ">
+                Create your New Amazon account</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

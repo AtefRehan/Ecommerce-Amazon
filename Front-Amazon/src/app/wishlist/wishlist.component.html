@@ -1,0 +1,31 @@
+<div class="flex flex-col w-full md:px-40 py-10 relative">
+
+
+<div *ngIf="products && products.length > 0">
+  <h1 class="m-5" style="text-align: center;font-size: larger;">Wishlist</h1>
+  <div *ngFor="let product of products" class="sm:flex hidden flex-col p-5 justify-center items-center bg-white w-50 hover:shadow-2xl shadow-lg rounded-sm ease-in duration-500" style="margin: auto;">
+      <div class="flex w-40 h-44 justify-center items-center overflow-hidden hover:scale-150 hover:shadow-2xl ease-in-out duration-1000">
+        <img [src]="product.image" alt="{{ product.name }}" width="100" height="100">
+      </div>
+      <div class="flex h-12 my-2 w-full overflow-hidden hover:overflow-scroll justify-center">
+        <h3>{{ product.name }}</h3>
+      </div>
+      <div class="font-Nunito my-2">
+        <p>Price: {{ product.price }}</p>
+      </div>
+      <div class="font-Nunito my-2">
+        <p>Description: {{ product.description }}</p>
+      </div>
+      <p>Weight: {{ product.weight }}</p>
+      <button (click)="addToCart(product.productId)"
+      class="rounded-lg w-50 bg-yellow-300 hover:bg-yellow-400 text-center p-2 hover:shadow-2xl ease-in-out duration-1000 hover:text-orange-600 m-3">
+        Add to Cart
+      </button> <button (click)="delete(product.productId)"
+      class="rounded-lg w-50 bg-red-300 hover:bg-red-400 text-center p-2 hover:shadow-2xl ease-in-out duration-1000 hover:text-orange-600">
+        Remove From WishList
+      </button>
+    </div>
+</div>
+<div *ngIf="products && products.length === 0">
+  <p>No products found in wishlist.</p>
+</div>

@@ -1,0 +1,110 @@
+
+<!-- Main content area -->
+<main class="flex min-h-fit w-full">
+  <!-- Left column -->
+  <div class="flex flex-col w-full md:px-40 py-10 relative">
+    <!-- Top section with image -->
+    <div class="flex w-full relative">
+      <img src="assets/add1.jpg" class="h-36 object-cover w-full " />
+      <button
+        class="md:block hidden w-24 p-1 text-sm rounded-md absolute top-0 right-0 z-10 mt-20 mr-48 bg-gray-200">Learn
+        More</button>
+    </div>
+
+    <!-- Content section -->
+    <div class="flex flex-grow h-full w-full justify-evenly lg:container lg:mx-auto ">
+      <!-- Left column -->
+      <div class="flex w-3/4 h-full" *ngIf="itemsInCart?.length==0">
+        <!-- Content for empty cart -->
+        <div class="md:flex hidden w-2/3">
+          <img src="assets/jugs.png" style="height: 260px ;margin-top: 200px;" />
+        </div>
+        <div class="flex flex-col justify-evenly w-full h-full">
+          <div class="flex sm:justify-start justify-center items-center md:text-3xl text-lg h-1/2 mb-5 ">
+         <span style="margin-bottom: 100px;"> &nbsp;  Your Amazon Cart is empty</span>
+                 </div>
+          <div class="flex justify-center items-start  h-4/5">
+            <button *ngIf="!isTokenExist" routerLink="/signin"
+              class="button bg-yellow-400 hover:bg-yellow-400 hover:scale-105 transition ease-in-out duration-500 p-1 rounded-md w-32">Sign
+              In </button>
+          </div>
+        </div>
+      </div>
+
+
+     <!-- Middle column for cart items -->
+     <div *ngIf="itemsInCart.length>0" class="flex flex-col h-full w-3/4">
+      <!-- Cart items section -->
+      <div class="flex justify-start w-full md:text-3xl text-lg py-5">
+        Shopping Cart
+      </div>
+
+      <div class="flex flex-col flex-grow h-full w-full my-3" *ngFor="let item of itemsInCart">
+        <div class="md:flex  hidden p-2 w-full max-h-24 overflow-x-auto font-Nunito my-2 bg-green-300 text-center">
+        Quantity Of <span style="background-color: aliceblue; border-radius: 50%; width: 202px;height: 22px;"><p>  {{ item.product.name }} - Quantity: {{ item.quantity }}</p>
+        </span>
+        </div>
+        <div
+          class="flex h-full justify-evenly p-4 md:shadow-none md:hover:shadow-none shadow-lg hover:shadow-xl ease-in-out duration-700 ">
+          <div class="flex h-full max-w-32">
+            <img class="md:h-32 md:w-32 h-20 w-20 " [src]="item.product.image" />
+          </div>
+          <div class="flex flex-col w-full h-full md:text-lg sm:text-sm text-xs">
+            <div class="flex  p-2 w-full  ">
+           {{item.product.name}}
+            </div>
+
+            <div class="flex p-2 w-full font-Nunito my-2">
+              Price $ {{item.product.price}}
+            </div>
+
+            <div class="flex flex-row justify-evenly items-center  ">
+              <button class="rounded-lg w-12 bg-green-300 hover:bg-green-400 text-center p-2  hover:shadow-2xl ease-in-out duration-700 hover:text-white" (click)="increaseQuantity(item.product.productId)">
+                <i class="fa-solid fa-plus"></i></button>
+            <button class="rounded-lg w-12 bg-red-300 hover:bg-red-400 text-center p-2  hover:shadow-2xl ease-in-out duration-700 hover:text-white" (click)="decreaseQuantity(item.product.productId)">
+                <i class="fa-solid fa-minus"></i>
+              </button>
+            </div>
+
+          </div>
+          <button (click)="removeFromCart(item.product.productId)"
+            class="rounded-lg w-50 h-25 text-center mt-5 bg-yellow-300 hover:bg-yellow-400 text-center p-2  hover:shadow-2xl ease-in-out duration-700 hover:text-orange-600">
+            Remove from Cart
+          </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+      <!-- Right column -->
+      <div class="md:flex hidden flex-col w-1/4 h-full  items-center md:text-lg text-sm ">
+        <!-- Content for right column -->
+        <div class="flex justify-evenly w-full md:text-3xl text-lg py-5" *ngIf="itemsInCart.length>0">
+          <div class="flex flex-col h-full  items-start justify-evenly md:text-lg text-xs  text-center ">
+            <p>Subtotal of {{ getTotalQuantity() }} items is ${{ calculateTotalCost() | number: '1.2-2' }}</p>
+            <div class="flex flex-grow justify-center items-start w-full mt-2">
+              <button routerLink="/signin" *ngIf="!isTokenExist"
+                class="rounded-lg md:w-48 bg-yellow-300 hover:bg-yellow-400 text-center p-2 hover:shadow-2xl hover:ease-in-out duration-500 hover:text-orange-600">
+                Login to Checkout
+              </button>
+              <button routerLink="/checkout" *ngIf="isTokenExist"
+                class="rounded-lg md:w-48 bg-yellow-300 hover:bg-yellow-400 text-center p-2 hover:shadow-2xl hover:ease-in-out duration-500 hover:text-orange-600">
+                Checkout
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="block  w-full h-full mt-3 ">
+          <div class="flex text-center font-thin text-lg justify-center">Add more to your cart</div>
+          <div class="flex flex-col w-full p-5 md:text-lg sm:text-sm text-xs" *ngFor="let i of products.slice(0, 3)">
+          <app-card class=" shadow-sm " [item]="i"></app-card>
+          </div>
+          <button routerLink="/show product" style="font-size: larger;color: blue;margin-left: 80px;text-decoration: underline;">See More ....</button>
+        </div> -->
+      </div>
+
+</main>
+
+
