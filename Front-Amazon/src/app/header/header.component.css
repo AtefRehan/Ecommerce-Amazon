@@ -1,0 +1,28 @@
+.search{
+  border-top-right-radius:5px ;
+  border-bottom-right-radius:5px ;
+}
+.input{
+  border-top-right-radius:10px ;
+  border-bottom-right-radius:10px ;
+}
+.close{
+  /* margin-left: 45px; */
+  color: rgb(255, 255, 255);
+}
+#close{
+  border: none;
+}
+#staticBackdrop{
+  background-color: #000000e0;
+}
+.select {
+  border: none;
+  background-color: rgb(234, 234, 234);
+  font-size: 16px;
+  text-align: center;
+  padding: 8px;
+  color: #333;
+  width: auto;
+  max-width: 100%;
+}

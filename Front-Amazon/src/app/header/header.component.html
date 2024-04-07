@@ -1,0 +1,247 @@
+<div class=" flex-col min-w-fit bg-slate-900 text-white text-xs" id="header">
+  <div class="sm:flex hidden  min-w-fit h-19 p-2 justify-evenly p-2">
+    <button routerLink="" class=" flex items-center justify-center h-full min-w-fit  ">
+      <img class="flex lg:w-28 w-20 hover:border-b py-2" src="assets/amazon.png" />
+    </button>
+
+
+    <div class="flex h-full flex-col hover:border-b ease-in-out md:justify-normal justify-center min-w-fit px-1">
+      <div class="flex md:pl-5 md:w-36 sm:w-20 w-7  text-gray-300">
+        <p class="md:inline hidden">Delivering to</p>
+        <div class="md:hidden inline"></div>
+        <p class="sm:inline hidden">&nbsp; {{currentCity}},&nbsp; </p>
+        <p class="">{{countryCode}}</p>
+      </div>
+
+      <div class="md:flex hidden">
+        <i class="fa-solid fa-location-dot text-xl"></i>
+        <div class="sm:block hidden md:text-base text-xs font-bold">
+          &nbsp;Update <p class="md:inline hidden"> location</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="input flex h-full justify-center bg-white rounded-md mt-3 ">
+      <select class="select flex border-black rounded-md bg-white-300 hover:bg-orange-400 md:w-12 md:text-sm text-xs w-45 justify-center items-center p-2 text-gray-700 font-bold ease-in-out duration-200"
+      >
+<option value="aps">All</option>
+<option value="alexa-skills">Alexa Skills</option>
+<option value="instant-video">Amazon Video</option>
+<option value="warehouse-deals">Amazon Warehouse Deals</option>
+<option value="appliances">Appliances</option>
+<option value="mobile-apps">Apps &amp; Games</option>
+<option value="arts-crafts">Arts, Crafts &amp; Sewing</option>
+<option value="automotive">Automotive Parts &amp; Accessories</option>
+<option value="baby-products">Baby</option>
+<option value="beauty">Beauty &amp; Personal Care</option>
+<option value="stripbooks">Books</option>
+</select>
+
+
+
+      <input class="text-black 2xl:w-xl rounded-md lg:w-96 md:w-72 scroll-m-40 h-full p-2" type="text"
+      placeholder="Search..." id="search" name="search"[(ngModel)]="searchQuery"/>
+      <button class="search bg-orange-300 p-2 w-30 min-w-fit" (click)="search()">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+
+    </div>
+
+
+
+
+    <div class="xl:flex hidden  rounded-xl justify-center items-center">
+      <img class="w-5 h-5" src="assets/egypt flag.png" />AR
+    </div>
+
+
+    <button routerLink="/signin" class="flex flex-col hover:border-b ease-in-out justify-center min-w-fit">
+      <div class="text-gray-300" *ngIf="!isLoginExist">
+                Hello, sign in
+      </div>
+      <div class="text-gray-350" *ngIf="Nameuser">
+        Hello,{{Nameuser}}
+      </div>
+      <div class="lg:flex hidden">
+        <div class=" text-base font-bold">
+          Account & list
+        </div>
+      </div>
+    </button>
+
+      <button class="lg:flex h-full items-center hover:border-b ease-in-out" routerLink="/wishlist">
+
+     <div class="flex ">
+          <div class=" text-base font-bold mt-3">
+             Wishlist
+          </div>
+        </div>
+      </button>
+
+    <button class="lg:flex hidden h-full flex-col hover:border-b pt-2 ease-in-out" routerLink="/orders">
+      <div class="pl-5 text-gray-300">
+        Returns
+      </div>
+
+      <div class="flex ">
+        <div class=" text-base font-bold">
+          & Orders
+        </div>
+      </div>
+    </button>
+
+
+    <button class="lg:hidden flex h-full items-center hover:border-b ease-in-out" routerLink="/orders">
+      <div class="pl-5 text-gray-300">
+        Returns
+      </div>
+    </button>
+
+    <div class="flex h-full flex-col justify-start  items-center  min-w-fit">
+      <div class="text-orange-400 text-xl h-3">
+        {{ getTotalQuantity() }}             </div>
+      <button routerLink="/cart" class="flex ">
+        <img class="ml-2 h-8 w-10 hover:border-b" src="assets/cart.png" />
+      </button>
+    </div>
+  </div>
+
+  <div class="flex w-full sm:bg-slate-700 bg-slate-800 md:text-sm text-xs  sm:p-0 pb-2 h-8">
+    <div class="sm:flex hidden w-14 ">
+      <button class="flex flex-col justify-around ml-5 my-3" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
+        <i class="fa-solid fa-bars text-2xl"></i>
+      </button>
+      <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop"
+        aria-labelledby="staticBackdropLabel">
+        <div class="offcanvas-header">
+          <div class="text-xl text-center text-white p-2 w-75 rounded-lg" *ngIf="!isLoginExist">
+            Hello, sign in
+          </div>
+          <div class="text-xl text-center text-white p-2 w-75 rounded-lg" *ngIf="Nameuser">
+            Hello, {{Nameuser}}
+          </div>
+          <div id="close"> <button type="button" class="btn-close text-2xl" data-bs-dismiss="offcanvas"
+              aria-label="Close"><i class="fa-solid fa-xmark close"></i></button></div>
+        </div>
+        <div class="offcanvas-body m-5">
+          <div>
+
+           <!-- HTML code for the button -->
+<p *ngIf="isAdmin === 'true'"
+   class="m-3 bg-orange-400 hover:bg-orange-400 hover:scale-105 transition ease-in-out duration-500 rounded-md p-2 text-center text-xl">
+    <button routerLink="/dashboard">Dash Board</button>
+</p>
+
+            <p
+              class="m-3 bg-gray-400 hover:bg-gray-400 hover:scale-105 transition ease-in-out duration-500 rounded-md p-2 text-center text-xl">
+              <button routerLink="subcategories/1">Cloths</button>
+            </p>
+            <p
+              class="m-3 bg-orange-400 hover:bg-orange-400 hover:scale-105 transition ease-in-out duration-500 rounded-md p-2 text-center text-xl">
+              <button routerLink="subcategories/2">Electrical</button>
+            </p>
+            <p
+              class="m-3 bg-gray-400 hover:bg-gray-400 hover:scale-105 transition ease-in-out duration-500 rounded-md p-2 text-center text-xl">
+              <button routerLink="subcategories/3">Books</button>
+            </p>
+            <p
+              class="m-3 bg-orange-400 hover:bg-orange-400 hover:scale-105 transition ease-in-out duration-500 rounded-md p-2 text-center text-xl">
+              <button routerLink="subcategories/4">Electronics</button>
+            </p>
+            <p
+              class="m-3 bg-gray-400 hover:bg-gray-400 hover:scale-105 transition ease-in-out duration-500 rounded-md p-2 text-center text-xl">
+              <button routerLink="subcategories/5">Beauty</button>
+            </p>
+
+            <hr>
+            <p
+              class="m-3 bg-orange-400 hover:bg-orange-400 hover:scale-105 transition ease-in-out duration-500 rounded-md p-2 text-center text-xl">
+              <button routerLink="subcategories/6">Sports</button>
+            </p>
+            <!-- <p
+              class="m-3 bg-gray-400 hover:bg-gray-400 hover:scale-105 transition ease-in-out duration-500 rounded-md p-2 text-center text-xl">
+              <a href="#">Target</a>
+            </p>
+            <p
+              class="m-3 bg-orange-400 hover:bg-orange-400 hover:scale-105 transition ease-in-out duration-500 rounded-md p-2 text-center text-xl">
+              <a href="#">Target</a>
+            </p>
+            <p
+              class="m-3 bg-gray-400 hover:bg-gray-400 hover:scale-105 transition ease-in-out duration-500 rounded-md p-2 text-center text-xl">
+              <a href="#">Target</a>
+            </p> -->
+
+            <div class="flex flex-col h-full">
+              <button
+                class="bg-red-400 hover:bg-red-400 hover:scale-105 transition ease-in-out duration-500 p-2 rounded-md w-full my-3"
+                (click)="signOut()">Sign Out</button>
+            </div>
+            <ul class="dropdown-menu">
+              <li>
+                <h6 class="dropdown-header">Dropdown header</h6>
+              </li>
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+            </ul>
+            <hr>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="sm:hidden flex-col w-10 min-w-fit hover:border-b text-sm items-center pr-2 ml-4">
+      <div class="text-xs ">
+        Shop By
+      </div>
+      <div class="text-sm ">
+        Category
+      </div>
+    </div>
+    <div class="md:flex hidden w-24 min-w-fit hover:border-b text-sm justify-center sm:items-center items-end">
+      <button routerLink="/products/16"> Best Sellers</button>
+    </div>
+    <div class="sm:hidden flex sm:w-0 w-full min-w-fit hover:border-b text-sm justify-center sm:items-center items-end "
+      routerLink="/history">
+      <button>Returns & Orders </button>
+    </div>
+    <div class="sm:flex hidden sm:w-24 w-10 hover:border-b min-w-fit text-sm justify-center items-center">
+      <button routerLink="/products/14"> Deals Store </button>
+    </div>
+    <div class="sm:flex hidden w-24 hover:border-b min-w-fit text-sm justify-center items-center">
+      <button routerLink="/products/15"> New Releases </button>
+    </div>
+    <div class="sm:flex hidden w-24 hover:border-b min-w-fit text-sm justify-center items-center">
+      <button routerLink="/products/13">Toys Games </button>
+    </div>
+    <div class="md:flex hidden w-24 hover:border-b min-w-fit text-sm justify-center items-center">
+      <button routerLink="/products/7"> Gift Ideas </button>
+    </div>
+    <div class="md:flex hidden w-24 hover:border-b  min-w-fit text-sm justify-center items-center">
+      <button routerLink="/products/9"> Audible </button>
+    </div>
+    <div class="lg:flex hidden w-24 hover:border-b min-w-fit text-sm justify-center items-center">
+      <button routerLink="/products/12"> Electronics </button>
+    </div>
+    <div class="lg:flex hidden w-24 hover:border-b min-w-fit text-sm justify-center items-center">
+      <button routerLink=""> Home </button>
+    </div>
+    <div class="md:flex hidden w-24 hover:border-b min-w-fit text-sm justify-center items-center">
+      <button routerLink="/products/8"> Books </button>
+    </div>
+    <div
+      class="flex sm:flex-grow sm:w-0 w-full min-w-fit hover:border-b text-sm justify-center sm:items-center items-end  ">
+      <button routerLink=""> Shop Big Deals </button>
+    </div>
+  </div>
+  <div class="sm:hidden flex p-2 bg-slate-700 ">
+
+  </div>
+  <div *ngIf="headerSwitch" class="flex md:h-36 h-24 bg-white w-screen overflow-x-auto gap-9 p-2">
+    <ng-container *ngFor="let i of itemImages ">
+      <img [src]='i' routerLink="/" class=" shadow-md hover:shadow-xl " />
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<div class="container">
+  <input class="form-control mb-4" placeholder="Search" [(ngModel)]="term" (ngModelChange)="onSearch()" />
+
+  <div *ngIf="products.length === 0" class="text-center mt-3">
+    <h3>No products match your search criteria</h3>
+  </div>
+
+  <!-- <div class="row">
+    <div class="col-4" *ngFor="let product of products; let i = index; trackBy: trackByFn">
+      <div class="card text-center m-3" style="width: 18rem;">
+        <img [src]="product.image" class="card-img-top" alt="Product Image" style="width: 200px; height: 200px; margin: auto;">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.title }}</h5>
+          <p>Price: {{ product.price }}</p>
+          <p>{{ product.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<input type="text" [(ngModel)]="inputData" placeholder="Enter text here">
+<button (click)="printInputData()">Print Data</button>

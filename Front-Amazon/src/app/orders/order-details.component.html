@@ -1,0 +1,90 @@
+<!-- <main class="flex min-h-fit w-full"> -->
+
+
+<!--
+  <div class="flex flex-col w-full md:px-40 py-10 relative">
+
+    <div class="flex flex-grow h-full w-full justify-evenly lg:container lg:mx-auto ">
+      <div class="flex flex-col h-full w-full">
+        <div class="flex w-3/4 h-full" *ngIf="selectedItems?.length==0">
+       <div class="md:flex hidden w-2/3">
+            <img src="assets/jugs.png" style="height: 260px ;margin-top: 200px;" />
+          </div>
+          <div class="flex flex-col justify-evenly w-full">
+            <div class="flex sm:justify-start justify-center items-center md:text-3xl text-lg  w-350 ">
+             &nbsp; Your Amazon orders is empty
+            </div>
+            <div class="flex justify-center items-start  h-3/5">
+              <button *ngIf="!isTokenExist"
+                class="button bg-yellow-400 hover:bg-yellow-400 hover:scale-105 transition ease-in-out duration-500 p-1 rounded-md w-32 mt-10" routerLink="/signin">SignIn
+              </button>
+            </div>
+          </div>
+        </div> -->
+
+
+        <div *ngFor="let order of orders" class="order-container">
+          <h2 class="order-heading">Order Details</h2>
+          <p class="order-property"><strong>Created At:</strong> {{ order.createdAt }}</p>
+          <p class="order-property"><strong>Shipping Date:</strong> {{ order.shippingDate }}</p>
+          <p class="order-property"><strong>Total:</strong> {{ order.total }}$</p>
+          <p class="order-property"><strong>Is Cancelled:</strong> {{ order.isCancelled ? 'Yes' : 'No' }}</p>
+          <p class="order-property"><strong>Card Type:</strong> {{ order.cardType }}</p>
+        <div *ngIf="order.orderProducts">
+          <h3 class="order-heading">Order Products</h3>
+          <div *ngFor="let product of order.orderProducts" class="order-product">
+            <img [src]="product.image" alt="{{ product.name }}" width="100" height="100" class="product-image">
+            <div class="product-details">
+              <p><strong>Name:</strong> {{ product.name }}</p>
+              <p><strong>Price:</strong> {{ product.price }}</p>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div *ngIf="orders && orders.length === 0" class="m-5">
+          <p>No orders found in order page.</p>
+        </div>
+
+
+        <!-- <div *ngIf="selectedItems.length>0" class="flex flex-col h-full w-3/4" style="margin: auto;">
+
+          <div class="flex justify-start w-full md:text-3xl text-lg py-5">
+            History Items
+          </div>
+          <div *ngFor="let selectedItem of selectedItems" class="product-details py-5">
+            <h2 style="margin: auto;">{{ selectedItem.name }}</h2>
+            <img [src]="selectedItem.image" alt="Product Image" class="product-image h-2/3" style="margin: auto;width: 250px;height: 250px;">
+            <p><strong>Price:</strong> ${{ selectedItem.price }}</p>
+            <p><strong>Description:</strong> {{ selectedItem.description }}</p>
+            <p><strong>Category:</strong> {{ selectedItem.category }}</p>
+            <button (click)="addToCart(selectedItem)"
+              class="rounded-lg w-48 bg-yellow-300 hover:bg-yellow-400 text-center p-2 my-4  hover:shadow-2xl ease-in-out duration-700 hover:text-orange-600">
+              Add to Cart
+            </button><br>
+            <button (click)="removeFromSelectedItems(selectedItem)"
+              class="rounded-lg w-48 bg-yellow-300 hover:bg-yellow-400 text-center p-2 my-4  hover:shadow-2xl ease-in-out duration-700 hover:text-orange-600">
+              Remove From History
+            </button>
+            <hr><hr>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+
+
+
+  <!-- Right column  -->
+  <!-- <div class="md:flex hidden flex-col w-1/4 h-full  items-center md:text-lg text-sm ">
+    <div class="block  w-full h-full mt-3 ">
+      <div class="flex text-center font-thin text-lg justify-center">Add more to your cart</div>
+      <div class="flex flex-col w-full p-5 md:text-lg sm:text-sm text-xs" *ngFor="let i of products.slice(0, 4)">
+        <app-card class=" shadow-sm " [item]="i"></app-card>
+      </div>
+    </div>
+  </div>
+</main> -->
+
+
+

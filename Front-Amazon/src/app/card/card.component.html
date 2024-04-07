@@ -1,0 +1,28 @@
+<div class="sm:flex hidden flex-col p-5 justify-center items-center bg-white w-full hover:shadow-2xl shadow-lg rounded-sm ease-in duration-500">
+  <div class="flex flex-row">
+    <div class="flex w-40 h-44 justify-center items-center overflow-hidden hover:scale-150 hover:shadow-2xl ease-in-out duration-1000">
+      <img [src]="item.image" />
+    </div>
+    <div>
+      <button (click)="HeartColor(item.productId)" [class.red-heart]="isHeartClicked" (click)="addToWishlist(item.productId)" style="margin-left: 70px;">
+        <i class="fa-solid fa-heart"></i>
+      </button>
+    </div>
+  </div>
+  <div class="flex h-12 my-2 w-full overflow-hidden hover:overflow-scroll justify-center">
+    {{item.name}}
+  </div>
+  <div class="font-Nunito my-2">
+    Price: EGP{{item.price}}
+  </div>
+  <button *ngIf="item.stock !== 0" (click)="addToCart(item.productId)"
+  [disabled]="item.stock === 0"
+  class="rounded-lg w-full bg-yellow-300 hover:bg-yellow-400 text-center p-2 hover:shadow-2xl ease-in-out duration-1000 hover:text-orange-600">
+Add to Cart
+</button>
+
+  <p *ngIf="item.stock === 0; else inStock" class="text-danger">Out Of Stock</p>
+  <ng-template #inStock>
+    <p class="text-success">In Stock</p>
+  </ng-template>
+</div>

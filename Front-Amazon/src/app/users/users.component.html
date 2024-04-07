@@ -1,0 +1,18 @@
+<button (click)="getAllUsers()" class="btn btn-success m-5">Get All Users</button>
+
+<ul class="user-list">
+  <li *ngFor="let user of users; let i = index" class="user-item">
+    <div class="user-details">
+      <p><strong>Name:</strong> {{ user.name }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong class="user">User ID:</strong> {{ user.applicationUserId }}</p>
+    </div>
+    <div class="admin-form">
+      <form #adminForm="ngForm" class="form" (ngSubmit)="addAdmin(user.applicationUserId, i)">
+        <label for="adminUsername{{i}}">Admin Username:</label>
+        <input type="text" id="adminUsername{{i}}" name="adminUsername{{i}}" [(ngModel)]="adminUsernames[i]" required class="input-field" style="border: 1px solid black; width: 50%;">
+        <button type="submit" class="btn btn-primary text-black w-25">Add Admin</button>
+      </form>
+    </div>
+  </li>
+</ul>

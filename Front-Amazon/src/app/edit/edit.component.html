@@ -1,0 +1,230 @@
+<!-- <form *ngIf="productForm" [formGroup]="productForm" (ngSubmit)="onSubmit()">
+  <input [(ngModel)]="productbyId" (input)="onProductIdChange($event)" type="text" class="form-control" placeholder="Enter Product ID">
+  <button (click)="getProductById()" class="btn btn-secondary my-3" >Go To Edit</button>
+</form>
+
+<form *ngIf="product" [formGroup]="productForm" (ngSubmit)="updateProduct(product)">
+    <div class="form-group">
+
+
+      <label class="mt-2">Name</label>
+      <input formControlName="name" type="text" class="form-control" placeholder="Username" name="name">
+    </div>
+    @if(getIsError("name","required")){
+    <span class="text-danger">Name is required</span>
+    }
+
+    <div class="form-group">
+      <label class="mt-2">Price</label>
+      <input formControlName="price" type="number" class="form-control" placeholder="Price" name="price">
+    </div>
+    @if(getIsError("price","required")){
+      <span class="text-danger">Price is required</span>
+      }
+
+
+    <div class="form-group">
+      <label class="mt-2">imgURL</label>
+      <input formControlName="imgURL" type="text" class="form-control" placeholder="Image url" name="imgURL">
+    </div>
+    @if(getIsError("imgURL","required")){
+      <span class="text-danger">ImgURL is required</span>
+      }
+
+
+    <div class="form-group">
+      <label class="mt-2">description</label>
+      <input formControlName="description" type="text" class="form-control" placeholder="description" name="description">
+    </div>
+    @if(getIsError("description","required")){
+      <span class="text-danger">Description is required</span>
+      }
+
+
+    <div class="form-group">
+      <label class="mt-2">Discount</label>
+      <input formControlName="discount" type="number" class="form-control" placeholder="discount" name="discount">
+    </div>
+    @if(getIsError("discount","required")){
+      <span class="text-danger">Discount is required</span>
+      }
+
+
+    <div class="form-group">
+      <label class="mt-2">matrial</label>
+      <input formControlName="matrial" type="text" class="form-control" placeholder="matrial" name="matrial">
+    </div>
+    @if(getIsError("matrial","required")){
+      <span class="text-danger">Matrial is required</span>
+      }
+
+
+    <div class="form-group">
+      <label class="mt-2">quantity</label>
+      <input formControlName="quantity" type="number" class="form-control" placeholder="quantity" name="quantity">
+    </div>
+    @if(getIsError("quantity","required")){
+      <span class="text-danger">Quantity is required</span>
+      }
+
+
+    <select formControlName="categoryID" placeholder="categoryID" name="categoryID" class="mt-2">
+      <option value="1" selected>Choose Your Category</option>
+      <option value="2">Women's Clothing</option>
+      <option value="3">Men's Clothing</option>
+      <option value="4">Electronics</option>
+      <option value="5">Jewelery</option>
+    </select>
+    @if(getIsError("categoryID","required")){
+      <span class="text-danger">CategoryID is required</span>
+      }
+
+
+    <div style="margin-top: 20px;text-align: center;" >
+      <button type="submit" class="btn btn-primary my-3" [disabled]="productForm.invalid">Update Product</button>
+    </div>
+
+  </form>
+
+ -->
+ <div style="text-align: center;">
+ <form *ngIf="productForm" [formGroup]="productForm">
+  <input formControlName="productId" (input)="onProductIdChange($event)" type="text" class="form-control w-75 my-2" placeholder="Enter Product ID" style="margin: auto;">
+  <button type="button" (click)="getProductById()" class="btn btn-info my-3 text-black">Go To Edit</button>
+</form>
+
+</div>
+
+
+<div class="flex justify-center items-center">
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="w-75">
+    <div class="flex flex-col mb-4">
+      <label for="name" class="font-bold">Product Name</label>
+      <input type="text" id="name" formControlName="name" class="form-control" placeholder="Product Name">
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label for="price" class="font-bold">Price</label>
+      <input type="number" id="price" formControlName="price" class="form-control" placeholder="Price">
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label for="stock" class="font-bold">Stock</label>
+      <input type="number" id="stock" formControlName="stock" class="form-control" placeholder="Stock">
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label for="weight" class="font-bold">Weight</label>
+      <input type="number" id="weight" formControlName="weight" class="form-control" placeholder="Weight">
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label for="description" class="font-bold">Description</label>
+      <textarea id="description" formControlName="description" class="form-control" placeholder="Description"></textarea>
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label for="category" class="font-bold">Category</label>
+      <input type="text" id="category" formControlName="category" class="form-control" placeholder="Category">
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label for="image" class="font-bold">Image</label>
+      <input type="text" id="image" formControlName="image" class="form-control" placeholder="Image URL">
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label for="supplierId" class="font-bold">Supplier ID</label>
+      <input type="number" id="supplierId" formControlName="supplierId" class="form-control" placeholder="Supplier ID">
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label for="subCategoryId" class="font-bold">Subcategory ID</label>
+      <input type="number" id="subCategoryId" formControlName="subCategoryId" class="form-control" placeholder="Subcategory ID">
+    </div>
+
+
+  <div style="margin-top: 20px; text-align: center;">
+    <button type="submit" class="btn btn-primary my-3 text-black" [disabled]="productForm.invalid" (click)="updateProduct(productId, productForm.value)">Update Product</button>
+  </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <div class="container">
+  <h2>Edit Product</h2>
+  <div *ngIf="!product">
+    <label for="productId">Enter Product ID:</label>
+    <input type="number" [(ngModel)]="productId" id="productId">
+    <button class="btn btn-primary" (click)="getProduct()">Submit</button>
+  </div>
+
+
+  <div *ngIf="product">
+
+ <div class="flex justify-center items-center h-screen">
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="w-75">
+    <div class="flex flex-col mb-4">
+      <label for="name" class="font-bold">Product Name</label>
+      <input type="text" id="name" formControlName="name" placeholder="Product Name">
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label for="price" class="font-bold">Price</label>
+      <input type="number" id="price" formControlName="price" placeholder="Price">
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label for="stock" class="font-bold">Stock</label>
+      <input type="number" id="stock" formControlName="stock" placeholder="Stock">
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label for="weight" class="font-bold">Weight</label>
+      <input type="number" id="weight" formControlName="weight" placeholder="Weight">
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label for="description" class="font-bold">Description</label>
+      <textarea id="description" formControlName="description" placeholder="Description"></textarea>
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label for="category" class="font-bold">Category</label>
+      <input type="text" id="category" formControlName="category" placeholder="Category">
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label for="image" class="font-bold">Image</label>
+      <input type="text" id="image" formControlName="image" placeholder="Image URL">
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label for="supplierId" class="font-bold">Supplier ID</label>
+      <input type="number" id="supplierId" formControlName="supplierId" placeholder="Supplier ID">
+    </div>
+
+    <div class="flex flex-col mb-4">
+      <label for="subCategoryId" class="font-bold">Subcategory ID</label>
+      <input type="number" id="subCategoryId" formControlName="subCategoryId" placeholder="Subcategory ID">
+    </div>
+
+    <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded">Save Changes</button>
+  </form>
+</div>
+</div>
+</div> -->

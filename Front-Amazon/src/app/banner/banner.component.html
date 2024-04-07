@@ -1,0 +1,14 @@
+<div class="flex h-full w-screen relative">
+  <button class="flex h-1/2 justify-start sm:items-center items-start sm:mt-0 mt-10  w-20 z-10 absolute top-0"
+    (click)="left()"> <img src="assets/left.svg" /></button>
+  <div [@fadeInOut]="count" class="flex h-full w-screen items-start justify-center ">
+    <!-- <video *ngIf="count<0"  autoplay loop class=" w-screen  h-full  object-cover" >
+            <source src="assets/shoppingVideo.mp4" type="video/mp4"/>
+            Your browser does not support the video.
+        </video> -->
+    <img *ngIf="count<0" src="assets/banner4.jpg" class="w-screen  sm:h-full object-cover " />
+    <img *ngIf="count>=0" [src]="backgroundImages[count]" class="w-screen sm:h-full object-cover" />
+  </div>
+  <button class="flex h-1/2 justify-end sm:items-center items-start sm:mt-0 mt-10 w-20 z-10 absolute top-0 right-0"
+    (click)="right()"> <img src="assets/right.svg" /></button>
+</div>

@@ -1,0 +1,157 @@
+
+<div class="flex flex-col min-h-screen w-screen relative">
+  <app-banner></app-banner>
+
+  <div class="shop-section grid lg:grid-cols-4 grid-cols-2">
+
+    <div *ngFor="let category of categories" class="box">
+      <img src="../../assets/amazon.png">
+      <h3>{{ category.categoryName }}</h3>
+      <button class="flex w-full bg-blue-200 p-2 border-black rounded-xl m-2 justify-center"
+              (click)="navigateToSubcategories(category.categoryId)">Types of {{ category.categoryName }}</button>
+    </div>
+
+
+
+
+ <div style="width: 100%; height: 300px;"></div>
+<div class="box">
+    <div class="">
+      <div class=""><img src="../../assets/cip.png" alt=""><button>CIP</button></div>
+    </div>
+    <button routerLink="show product">See all offers In CIP Bank</button>
+  </div>
+</div>
+
+
+<!--
+
+    <div class="box ">
+      <h2>Accessories</h2>
+      <div class="row">
+        <div class="box-img col-6 m-2" style="background-color: white;width: 160px;padding: 10px; height: 125px;"><img
+            src="../../assets/jew1.jpeg" style="width: 120px;height: 88px;margin: auto;" alt=""><button>.....</button></div>
+        <div class="box-img col-6 m-2" style="background-color: white;width: 160px;padding: 10px; height: 125px;"><img
+            src="../../assets/jew2.jpeg" style="width: 120px;height: 88px;margin: auto;" alt=""><button>.....</button></div>
+      </div>
+      <div class="row">
+        <div class="box-img col-6 m-2" style="background-color: white;width: 160px;padding: 10px; height: 125px;"><img
+            src="../../assets/jew3.jpeg" style="width: 120px;height: 88px;margin: auto;" alt=""><button>.....</button></div>
+        <div class="box-img col-6 m-2" style="background-color: white; width: 160px;padding: 10px; height: 125px;"><img
+            src="../../assets/jew4.jpg" style="width: 120px;height: 88px;margin: auto;" alt=""><button>......</button></div>
+      </div>
+      <button routerLink="accessories">See all offers</button>
+    </div>
+
+
+    <div class="box">
+      <h2>Electrical Devices</h2>
+      <div class="row">
+        <div class="box-img col-6 m-2" style="background-color: white;width: 160px; height: 125px;"><img
+          src="../../assets/tablets.png" alt=""><button>tablets</button></div>
+      <div class="box-img col-6 m-2" style="background-color: white;width: 160px; height: 125px;"><img
+          src="../../assets/mobil.png" alt=""><button>mobil</button></div>
+    </div>
+    <div class="row">
+      <div class="box-img col-6 m-2" style="background-color: white;width: 160px; height: 125px;"><img
+          src="../../assets/cables.png" alt=""><button>Cables</button></div>
+      <div class="box-img col-6 m-2" style="background-color: white; width: 160px; height: 125px;"><img
+          src="../../assets/powerbank.png" alt=""><button>powerbank</button></div>
+    </div>
+      <button routerLink="Electrical Devices">See all offers</button>
+    </div>
+
+
+
+    <div class="box">
+      <h2>Electronic Device</h2>
+      <div class="row">
+        <div class="box-img col-6 m-2" style="background-color: white;width: 160px; height: 125px;"><img
+            src="../../assets/tablets.png" alt=""><button>tablets</button></div>
+        <div class="box-img col-6 m-2" style="background-color: white;width: 160px; height: 125px;"><img
+            src="../../assets/mobil.png" alt=""><button>mobil</button></div>
+      </div>
+      <div class="row">
+        <div class="box-img col-6 m-2" style="background-color: white;width: 160px; height: 125px;"><img
+            src="../../assets/cables.png" alt=""><button>Cables</button></div>
+        <div class="box-img col-6 m-2" style="background-color: white; width: 160px; height: 125px;"><img
+            src="../../assets/powerbank.png" alt=""><button>powerbank</button></div>
+      </div>
+      <button routerLink="Electronic Device">See all offers</button>
+    </div>
+
+
+
+    <div class="box ">
+      <h2>Mens Clothes</h2>
+      <div class="row">
+        <div class="box-img col-6 m-2" style="background-color: white;width: 160px;padding: 10px; height: 125px;"><img
+          src="../../assets/men1.jpeg" style="width: 120px;height: 88px;margin: auto;"  alt=""><button>.....</button></div>
+      <div class="box-img col-6 m-2" style="background-color: white;width: 160px;padding: 10px; height: 125px;"><img
+          src="../../assets/men2.avif" style="width: 120px;height: 88px;margin: auto;"  alt=""><button>.....</button></div>
+    </div>
+    <div class="row">
+      <div class="box-img col-6 m-2" style="background-color: white;width: 160px;padding: 10px; height: 125px;"><img
+          src="../../assets/men3.jpeg" style="width: 120px;height: 88px;margin: auto;"  alt=""><button>.....</button></div>
+      <div class="box-img col-6 m-2" style="background-color: white; width: 160px;padding: 10px; height: 125px;"><img
+          src="../../assets/men4.jpeg" style="width: 120px;height: 88px;margin: auto;"  alt=""><button>.....</button></div>
+    </div>
+
+      <button routerLink="mens Clothes">See all offers</button>
+    </div>
+ -->
+
+<!--
+    <div class="box ">
+      <h2>Show products</h2>
+      <div class="row">
+        <div class="box-img col-6 m-2" style="background-color: white;width: 160px; height: 125px;"><img
+            src="../../assets/tablets.png" alt=""><button>tablets</button></div>
+        <div class="box-img col-6 m-2" style="background-color: white;width: 160px; height: 125px;"><img
+            src="../../assets/mobil.png" alt=""><button>mobil</button></div>
+      </div>
+      <div class="row">
+        <div class="box-img col-6 m-2" style="background-color: white;width: 160px; height: 125px;"><img
+            src="../../assets/cables.png" alt=""><button>Cables</button></div>
+        <div class="box-img col-6 m-2" style="background-color: white; width: 160px; height: 125px;"><img
+            src="../../assets/powerbank.png" alt=""><button>powerbank</button></div>
+      </div>
+      <button routerLink="show product">See all offers</button>
+    </div> -->
+
+<!--
+    <div class="box ">
+      <h2>Electronics</h2>
+      <div class="row">
+        <div class="box-img col-6 m-2" style="background-color: white;width: 160px; height: 125px;"><img
+            src="../../assets/tablets.png" alt=""><button>tablets</button></div>
+        <div class="box-img col-6 m-2" style="background-color: white;width: 160px; height: 125px;"><img
+            src="../../assets/mobil.png" alt=""><button>mobil</button></div>
+      </div>
+      <div class="row">
+        <div class="box-img col-6 m-2" style="background-color: white;width: 160px; height: 125px;"><img
+            src="../../assets/cables.png" alt=""><button>Cables</button></div>
+        <div class="box-img col-6 m-2" style="background-color: white; width: 160px; height: 125px;"><img
+            src="../../assets/powerbank.png" alt=""><button>powerbank</button></div>
+      </div>
+      <button routerLink="show product">See all offers</button>
+    </div>
+ -->
+
+<!--
+    <div class="box">
+      <div class="">
+        <div class=""><img src="../../assets/cip.png" alt=""><button>CIP</button></div>
+      </div>
+      <button routerLink="show product">See all offers In CIP Bank</button>
+    </div> -->
+
+
+
+
+  <div *ngIf="headerSwitch" class="flex md:h-36 h-24 bg-white w-screen overflow-x-auto gap-9 p-2">
+    <ng-container *ngFor="let i of itemImages ">
+      <img [src]='i' routerLink="/" class=" shadow-md hover:shadow-xl " />
+    </ng-container>
+  </div>
+</div>

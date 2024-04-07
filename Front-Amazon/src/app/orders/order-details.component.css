@@ -1,0 +1,29 @@
+
+.order-container {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  width: 50%;
+margin: auto;
+}
+.order-heading {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.order-property {
+  margin-bottom: 5px;
+}
+.order-product {
+  margin-top: 15px;
+}
+
+.product-image {
+  margin: auto;
+}
+
+.product-details {
+  display: inline-block;
+  vertical-align: top;
+}
