@@ -47,5 +47,16 @@ public class ProductInCartRepository : GenericRepository<ProductInCart>, IProduc
         return _context.ProductInCart.FirstOrDefault(c => c.ProductId == ProductId);
     }
 
+    public int GetProductInCartCount(int CartId)
+    {
+        int count = 0;
+        var cart = _context.Carts.Include(o => o.ProductsInCart).FirstOrDefault(i => i.CartId == CartId);
+        var cartProducts = cart.ProductsInCart.ToList();
+        foreach( var product in cartProducts)
+        {
+            count++;
+        }
+        return count;
+    }
 
 }
