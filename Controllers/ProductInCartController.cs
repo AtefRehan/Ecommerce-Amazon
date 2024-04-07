@@ -173,6 +173,17 @@ namespace ECommerce.Controllers
             _productInCartRepo.DeleteProductsInCartByCartId(id);
             _productInCartRepo.SaveChanges();
             return NoContent();
-        }   
+        }
+        [HttpGet("CartProducts/{id}")]
+        public IActionResult GetProducts(int id) 
+        {
+            if (id == null) 
+            { 
+                return NotFound();
+            }
+            var num = _productInCartRepo.GetProductInCartCount(id);
+            return Ok(num);
+
+        }
     }
 }
