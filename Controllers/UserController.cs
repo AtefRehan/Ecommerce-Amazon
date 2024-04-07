@@ -31,20 +31,15 @@ namespace ECommerce.Controllers
     public class UserController : ControllerBase
     {
         private AmazonDB context;
-        private readonly IConfiguration configuration;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IMapper mapper;
         private readonly IRoleRepository roleRepository;
         private readonly TokenService tokenService;
         private readonly IEmailService _emailService;
 
-        public UserController(AmazonDB _context, IConfiguration _configuration,
-            UserManager<ApplicationUser> _userManager, IMapper _mapper, IRoleRepository _roleRepository,
-            TokenService _tokenService, IEmailService emailService)
+        public UserController(AmazonDB _context, UserManager<ApplicationUser> _userManager, 
+            IRoleRepository _roleRepository,TokenService _tokenService, IEmailService emailService)
         {
-            this.configuration = _configuration;
             this.userManager = _userManager;
-            this.mapper = _mapper;
             this.context = _context;
             this.roleRepository = _roleRepository;
             this.tokenService = _tokenService;
@@ -109,6 +104,10 @@ namespace ECommerce.Controllers
                 try
                 {
                     user = await userManager.FindByEmailAsync(credentials.Email);
+                    if(user == null)
+                    {
+                        return Unauthorized(" Invaild Email ");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -126,7 +125,7 @@ namespace ECommerce.Controllers
                 if (!isAuthenticated)
                 {
                     await userManager.AccessFailedAsync(user);
-                    return Unauthorized("Wrong Credentials");
+                    return Unauthorized("Wrong Password");
                 }
 
                 var accessToken = tokenService.CreateToken(user);
@@ -212,6 +211,9 @@ namespace ECommerce.Controllers
 
         #endregion
 
+        #region ForgotPassword
+
+
         // [HttpPost]
         // [Route("forgot-password")]
         // [AllowAnonymous]
@@ -232,9 +234,8 @@ namespace ECommerce.Controllers
         //
         //     return BadRequest();
         // }
-        
-        
-        
+
+
         [HttpPost]
         [Route("forgot-password")]
         [AllowAnonymous]
@@ -301,6 +302,7 @@ namespace ECommerce.Controllers
 
             return BadRequest();
         }
-        
+        #endregion
+
     }
 }
