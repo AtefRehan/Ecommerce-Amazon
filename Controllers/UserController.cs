@@ -247,7 +247,7 @@ namespace ECommerce.Controllers
                 var token = await userManager.GeneratePasswordResetTokenAsync(user);
                 // var forgotPasswordLink = Url.Action(nameof(ResetPassword), "User", new { token, email = user.Email },
                     // Request.Scheme);
-                    var forgotPasswordLink = "http://localhost:4200/signup";
+                    var forgotPasswordLink = "http://localhost:4200/newpass";
                 var message = new SendEmailDto()
                 {
                     Html = "Click the link below to change your Password , If you didn't request a password change please ignore this message !" + forgotPasswordLink,
