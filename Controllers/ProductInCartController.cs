@@ -64,7 +64,7 @@ namespace ECommerce.Controllers
 
 
         [HttpGet("{id}")]
-        public ActionResult<ProductDTO> GetByCartId(int id)
+        public ActionResult<ProductInCartReadDto> GetByCartId(int id)
         {
             var products = _productInCartRepo.GetProductsInCartByCartId(id);
             return Ok(_mapper.Map<List<ProductInCartReadDto>>(products));
