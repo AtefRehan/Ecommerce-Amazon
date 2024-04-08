@@ -1,4 +1,4 @@
-<p align="center"><img src="Front-Amazon/src/assets/ic_launcher.png" align="center" alt="logo"/></p>
+<p align="center"><img src="ic_launcher.png" align="center" alt="logo"/></p>
 <h1> <p align="center"> Amazon </p></h1>
 
 Welcome to the comprehensive documentation for the Amazon E-Commerce website, meticulously developed with educational objectives in mind. This documentation offers an in-depth exploration of the captivating features and functionalities of our platform, focusing primarily on product sales and providing users with a seamless online shopping experience.
@@ -111,19 +111,19 @@ This file structure represents the organization of our e-commerce website projec
 - [x] Product Availability: Allow users to know if the products are available or not.
 - [ ] Notifications: Out-of-stock products and receive alerts when they become available
 
-![img.png](Front-Amazon/src/assets/img.png)
+![img.png](img.png)
 
-![img_1.png](Front-Amazon/src/assets/img_1.png)
+![img_1.png](img_1.png)
 
 
 ## Dependencies
-![img_3.png](Front-Amazon/src/assets/img_3.png)
+![img_3.png](img_3.png)
 
 Read [The Fastest NuGet Package Ever Published (Probably)](https://rehansaeed.com/the-fastest-nuget-package-ever-published-probably/) for a full walk through guide with screenshots on how you can create a brand new project using this template and get a NuGet package published in a couple of minutes.
 
 This project template leverages `dotnet new`, a command-line interface tool, to enable you to customize the features of the project template. You can easily turn on or off specific features according to your requirements.
 
-![img_2.png](Front-Amazon/src/assets/img_2.png)
+![img_2.png](img_2.png)
 
 This project template comes with the following dependencies:
 
@@ -230,12 +230,12 @@ fetch('http://localhost:5189/api/ProductInCart/2', options)
 
 ## Contributors  ✈️
 
-<a href="https://github.com/dinaAmmam"> <img align="left" src="Front-Amazon/src/assets/image22.png" width="100"  height="100" alt="dina"/> </a>
+<a href="https://github.com/dinaAmmam"> <img align="left" src="image22.png" width="100"  height="100" alt="dina"/> </a>
 
-<a href="https://github.com/MhmdTahaSheRif"> <img align="left" src="Front-Amazon/src/assets/image 23.png" height="100" alt="mohamed"/></a>
+<a href="https://github.com/MhmdTahaSheRif"> <img align="left" src="image 23.png" height="100" alt="mohamed"/></a>
 
-<a href="https://github.com/AtefRehan"> <img align="left" src="Front-Amazon/src/assets/image 24.png" height="100" alt="atef"/></a>
+<a href="https://github.com/AtefRehan"> <img align="left" src="image 24.png" height="100" alt="atef"/></a>
 
-<a href="https://github.com/esra-saleh"> <img align="left" src="Front-Amazon/src/assets/image 25.png"  height="100" alt="esra"/></a>
+<a href="https://github.com/esra-saleh"> <img align="left" src="image 25.png"  height="100" alt="esra"/></a>
 
-<a href="https://github.com/Mariam-Sameh6"> <img align="left" src="Front-Amazon/src/assets/image 26.png"  height="100" alt="mariam"/></a>
+<a href="https://github.com/Mariam-Sameh6"> <img align="left" src="image 26.png"  height="100" alt="mariam"/></a>
