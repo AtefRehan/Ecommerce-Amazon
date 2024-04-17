@@ -58,10 +58,15 @@
               Price $ {{item.product.price}}
             </div>
 
-            <div class="flex flex-row justify-evenly items-center  ">
-              <button class="rounded-lg w-12 bg-green-300 hover:bg-green-400 text-center p-2  hover:shadow-2xl ease-in-out duration-700 hover:text-white" (click)="increaseQuantity(item.product.productId)">
-                <i class="fa-solid fa-plus"></i></button>
-            <button class="rounded-lg w-12 bg-red-300 hover:bg-red-400 text-center p-2  hover:shadow-2xl ease-in-out duration-700 hover:text-white" (click)="decreaseQuantity(item.product.productId)">
+            <div class="flex flex-row justify-evenly items-center">
+              <button *ngIf="item.quantity!==item.product.stock" class="rounded-lg w-12 bg-green-300 hover:bg-green-400 text-center p-2 hover:shadow-2xl ease-in-out duration-700 hover:text-white"
+                      (click)="increaseQuantity(item.product.productId)">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+              <button *ngIf="item.quantity > 1"
+                      class="rounded-lg w-12 bg-red-300 hover:bg-red-400 text-center p-2 hover:shadow-2xl ease-in-out duration-700 hover:text-white"
+                      [id]="'decreaseButton' + item.product.productId"
+                      (click)="decreaseQuantity(item.product.productId)">
                 <i class="fa-solid fa-minus"></i>
               </button>
             </div>

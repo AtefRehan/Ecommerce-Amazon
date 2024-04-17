@@ -5,6 +5,8 @@ import { ReversegeoencodingService } from 'src/service/reversegeoencoding.servic
 import { Router } from '@angular/router';
 import { Product } from 'src/interfaces/product';
 import { CartService } from 'src/service/cart.service';
+import { Observable, map, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-header',
@@ -32,7 +34,7 @@ export class HeaderComponent implements OnInit {
   searchQuery: string = '';
   products: Product[] = [];
 
-  constructor(private globalState: GlobalstateService, private currentLocation: ReversegeoencodingService,private router: Router,private cartService:CartService) { }
+  constructor(private http:HttpClient,private globalState: GlobalstateService, private currentLocation: ReversegeoencodingService,private router: Router,private cartService:CartService) { }
 
   ngOnInit(): void {
     this.globalState.currentUserSubscription.subscribe(res => {
@@ -102,9 +104,25 @@ export class HeaderComponent implements OnInit {
     return totalQuantity;
   }
 
-  updateTotalQuantity() {
-    this.totalQuantity = this.getTotalQuantity();
-  }
+  // getQuantity(): Observable<number> {
+  //   let cartId = localStorage.getItem('cartId');
+  //   if (!cartId) {
+  //     return throwError('Cart ID not found in local storage.');
+  //   }
+
+  //   return this.http.get<any[]>(`http://localhost:5189/api/ProductInCart/CartProducts/${cartId}`).pipe(
+  //     map(cartProducts => {
+  //       let totalQuantity = 0;
+  //       for (const item of cartProducts) {
+  //         totalQuantity += item.quantity;
+  //       }
+  //       return totalQuantity;
+  //     })
+  //   );
+  // }
+  // updateTotalQuantity() {
+  //   this.totalQuantity = this.getTotalQuantity();
+  // }
 
   // search() {
   //   this.globalState.getSearchedItemsResult(this.searchItem);

@@ -1,29 +1,30 @@
+
 <div class="flex flex-col min-h-screen w-screen relative">
   <app-banner></app-banner>
 
   <div class="shop-section grid lg:grid-cols-4 grid-cols-2">
+
     <div *ngFor="let category of categories" class="box">
-      <img src="../../assets/amazon.png" />
+      <img src="../../assets/amazon.png">
       <h3>{{ category.categoryName }}</h3>
-      <button
-        class="flex w-full bg-blue-200 p-2 border-black rounded-xl m-2 justify-center"
-        (click)="navigateToSubcategories(category.categoryId)"
-      >
-        Types of {{ category.categoryName }}
-      </button>
+      <button class="flex w-full bg-blue-200 p-2 border-black rounded-xl m-2 justify-center"
+              (click)="navigateToSubcategories(category.categoryId)">Types of {{ category.categoryName }}</button>
     </div>
 
-    <!-- <div style="width: 100%; height: 300px;"></div>
+
+
+
+ <!-- <div style="width: 100%; height: 300px;"></div>
 <div class="box">
     <div class="">
       <div class=""><img src="../../assets/cip.png" alt=""><button>CIP</button></div>
     </div>
     <button routerLink="show product">See all offers In CIP Bank</button>
   </div>
- -->
-  </div>
+</div> -->
 
-  <!--
+
+<!--
 
     <div class="box ">
       <h2>Accessories</h2>
@@ -100,7 +101,7 @@
     </div>
  -->
 
-  <!--
+<!--
     <div class="box ">
       <h2>Show products</h2>
       <div class="row">
@@ -118,7 +119,7 @@
       <button routerLink="show product">See all offers</button>
     </div> -->
 
-  <!--
+<!--
     <div class="box ">
       <h2>Electronics</h2>
       <div class="row">
@@ -137,7 +138,7 @@
     </div>
  -->
 
-  <!--
+<!--
     <div class="box">
       <div class="">
         <div class=""><img src="../../assets/cip.png" alt=""><button>CIP</button></div>
@@ -145,12 +146,12 @@
       <button routerLink="show product">See all offers In CIP Bank</button>
     </div> -->
 
-  <div
-    *ngIf="headerSwitch"
-    class="flex md:h-36 h-24 bg-white w-screen overflow-x-auto gap-9 p-2"
-  >
-    <ng-container *ngFor="let i of itemImages">
-      <img [src]="i" routerLink="/" class="shadow-md hover:shadow-xl" />
+
+
+
+  <div *ngIf="headerSwitch" class="flex md:h-36 h-24 bg-white w-screen overflow-x-auto gap-9 p-2">
+    <ng-container *ngFor="let i of itemImages ">
+      <img [src]='i' routerLink="/" class=" shadow-md hover:shadow-xl " />
     </ng-container>
   </div>
 </div>

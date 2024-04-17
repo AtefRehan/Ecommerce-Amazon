@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CartService } from 'src/service/cart.service';
 import { Product } from 'src/interfaces/product';
@@ -14,6 +14,7 @@ export class WishlistComponent implements OnInit {
   products: any[] = [];
   selectedItems: Product[] = [];
   isTokenExist = localStorage.getItem('LoginExist!');
+  @Input()item!:Product
 
   constructor(private http: HttpClient,private cartService:CartService) { }
 
@@ -35,6 +36,7 @@ export class WishlistComponent implements OnInit {
         }
       );
     }
+
     delete(productId:number) {
       let userId = localStorage.getItem('userId');
       const url = `http://localhost:5189/api/WishList?productId=${productId}&userID=${userId}`;
@@ -51,15 +53,17 @@ export class WishlistComponent implements OnInit {
     }
 
     addToCart(productId: number): void {
-      console.log("tahaaa")
-          this.cartService.addToCart(productId).subscribe(
-            () => {
-              console.log('Product added to cart successfully.');
-            },
-            error => {
-              console.error('Error adding product to cart:', error);
-            }
-          );
+      console.log("Adding product to cart. ProductId:", productId);
+      let productToAdd = { productId: productId };
+      this.cartService.addToCart(productToAdd).subscribe(
+        (response) => {
+          console.log('Product added to cart successfully.', response);
+        },
+        error => {
+          console.error('Error adding product to cart:', error);
         }
+      );
+    }
+
 
   }

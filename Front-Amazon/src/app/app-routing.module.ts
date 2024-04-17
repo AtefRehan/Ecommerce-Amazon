@@ -27,7 +27,7 @@ import { TessssssstComponent } from './tessssssst/tessssssst.component';
 import { NewpassComponent } from './newpass/newpass.component';
 import { AboutusComponent } from './aboutus/aboutus.component';
 
-const routes: Routes = [
+let routes: Routes = [
     {path:'',component:HomepageComponent,title:"Amazon Home"},
     {path:'cart',component:CartComponent,title:"Amazon Cart"},
     {path:'test',component:TestComponent,title:"Amazon Cart"},
@@ -36,17 +36,17 @@ const routes: Routes = [
     {path:'signin',component:SignInComponent,title:"Amazon SignIn"},
     {path:'signup',component:SignupComponent,title:"Amazon SignUp"},
     {path:'forgetpass',component:ForgetpassComponent,title:"Amazon forgetpass"},
-    {path:'edit',component:EditComponent, canActivate: [AuthGuard], title:"Amazon edit"},
-    {path:'addsupplier',component:AddsupplierComponent, canActivate: [AuthGuard], title:"Amazon addsupplier"},
-    {path:'add',component:AddComponent, canActivate: [AuthGuard], title:"Amazon add"},
+    {path:'edit',component:EditComponent, title:"Amazon edit"},
+    {path:'addsupplier',component:AddsupplierComponent, title:"Amazon addsupplier"},
+    {path:'add',component:AddComponent,title:"Amazon add"},
     {path:'dashboard',component:DashboardComponent, title:"Amazon dashboard"},
     {path:'wishlist',component:WishlistComponent, title:"Amazon wishlist"},
     {path:'newpass',component:NewpassComponent, title:"Amazon New Password"},
-    {path:'delete',component:DeletComponent, canActivate: [AuthGuard], title:"Amazon delete"},
+    {path:'delete',component:DeletComponent,  title:"Amazon delete"},
     {path:'checkout',component:PaymentformComponent,title:"Amazon Checkout Payment"},
     {path:'orders',component:OrderDetailsComponent,title:"Amazon Order"},
-    {path:'addsubcategory',component:AddsubcategoryComponent,canActivate: [AuthGuard],title:"Amazon addsubcategory"},
-    {path:'addcategory',component:AddcategoryComponent,canActivate: [AuthGuard],title:"Amazon addcategory"},
+    {path:'addsubcategory',component:AddsubcategoryComponent,title:"Amazon addsubcategory"},
+    {path:'addcategory',component:AddcategoryComponent,title:"Amazon addcategory"},
     {path:'show product',component:ShowproductComponent,title:"Amazon Show Product"},
     { path: 'products/:subcategoryId', component: ProductComponent },
     {path:'users',component:UsersComponent,title:"Amazon Users"},

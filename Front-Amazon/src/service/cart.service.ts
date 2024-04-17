@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +14,8 @@ export class CartService {
 
   addToCart(item: any): Observable<any> {
     let cartId = localStorage.getItem('cartId') || 'default';
-    let productId = item.productId; // Assuming productId is a property of your item object
-
-    // Decrement the stock by one
+    let productId = item.productId;
     item.stock--;
-
     return this.http.get<any[]>(`http://localhost:5189/api/ProductInCart/${cartId}`).pipe(
       switchMap((cartItems: any[]) => {
         const existingItem = cartItems.find(item => item.product.productId === productId);
@@ -55,24 +52,40 @@ export class CartService {
     }
     return this.http.get<any[]>(url);
   }
+
+
   decreaseQuantityByCartId(productId: number): Observable<any> {
     let cartId = localStorage.getItem('cartId');
     if (!cartId) {
       console.error('Cart ID not found in local storage.');
       return throwError('Cart ID not found in local storage.');
     }
-
     return this.http.get<any[]>(`${this.apiUrl}/${cartId}`).pipe(
       switchMap((cartItems: any[]) => {
-        const cartItem = cartItems.find(item => item.product.productId === productId);
+        let cartItem = cartItems.find(item => item.product.productId === productId);
         if (!cartItem) {
           console.error('Error: Cart item not found');
           return throwError('Cart item not found');
         }
-
-        const idInDB = cartItem.id; // Use the 'id' property of the cart item
-        const url = `${this.apiUrl}/${idInDB}/decreasequantity`;
+        let idInDB = cartItem.id;
+        let url = `${this.apiUrl}/${idInDB}/decreasequantity`;
         return this.http.post(url, {}).pipe(
+          switchMap(() => {
+            if (cartItem.quantity === 1) {
+              return this.http.delete(`${this.apiUrl}/${idInDB}`).pipe(
+                switchMap(() => {
+                  console.log('Product removed from cart');
+                  return this.http.get<any[]>(`${this.apiUrl}/${cartId}`);
+                }),
+                catchError(error => {
+                  console.error('Error retrieving updated cart items:', error);
+                  throw error;
+                })
+              );
+            } else {
+              return of(false);
+            }
+          }),
           catchError(error => {
             console.error('Error decreasing product quantity:', error);
             throw error;
@@ -83,8 +96,8 @@ export class CartService {
         console.error('Error retrieving product in cart:', error);
         throw error;
       })
-    );
-  }
+    );}
+
 
   increaseQuantityByCartId(productId: number): Observable<any> {
     let cartId = localStorage.getItem('cartId');
@@ -92,7 +105,6 @@ export class CartService {
       console.error('Cart ID not found in local storage.');
       return throwError('Cart ID not found in local storage.');
     }
-
     return this.http.get<any[]>(`${this.apiUrl}/${cartId}`).pipe(
       switchMap((cartItems: any[]) => {
         const cartItem = cartItems.find(item => item.product.productId === productId);
@@ -101,8 +113,8 @@ export class CartService {
           return throwError('Cart item not found');
         }
 
-        const idInDB = cartItem.id; // Use the 'id' property of the cart item
-        const url = `${this.apiUrl}/${idInDB}/increasequantity`;
+        let idInDB = cartItem.id;
+        let url = `${this.apiUrl}/${idInDB}/increasequantity`;
         return this.http.post(url, {}).pipe(
           catchError(error => {
             console.error('Error increasing product quantity:', error);

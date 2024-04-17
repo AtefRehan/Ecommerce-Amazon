@@ -13,7 +13,7 @@ namespace ECommerce.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PaymentController:ControllerBase
+    public class PaymentController : ControllerBase
     {
         private readonly IPaymentRepository paymentRepo;
         private readonly IOrderRepository orderRepo;

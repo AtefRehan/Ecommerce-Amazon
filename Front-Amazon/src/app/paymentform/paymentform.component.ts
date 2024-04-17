@@ -167,7 +167,7 @@ submitPaymentForm(): void {
   this.cartService.getCartItems(+cartId).subscribe(
     (productsInCart) => {
       console.log('Products retrieved successfully:', productsInCart);
-      const confirmation = window.confirm(`Are you sure you want to proceed with the payment?\n${productsInCart}`);
+      const confirmation = window.confirm(`Are you sure you want to proceed with the payment?}`);
       if (!confirmation) {
         console.log('Payment cancelled.');
         return;
@@ -184,7 +184,6 @@ submitPaymentForm(): void {
         .subscribe(
           (paymentData: any) => {
             console.log('Payment submitted successfully:', paymentData);
-
             const orderData = {
               cartId: cartId,
               paymentId: paymentData.paymentId

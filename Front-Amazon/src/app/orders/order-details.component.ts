@@ -9,6 +9,7 @@ import { OrderData } from 'src/interfaces/order'; // Import the OrderData interf
 })
 export class OrderDetailsComponent implements OnInit {
   orders: OrderData[] = [];
+orderId!: number;
 
   constructor(private http: HttpClient) { }
 
@@ -29,5 +30,20 @@ export class OrderDetailsComponent implements OnInit {
           console.error('Error retrieving order details:', error);
         }
       );
+  }
+
+  deleteOrder(orderId: number): void {
+    const orderIndex = this.orders.findIndex(order => order.orderId === orderId);
+    if (orderIndex !== -1) {
+      this.orders[orderIndex].isCancelled = true;
+    }
+    this.http.delete(`http://localhost:5189/api/Order/${orderId}`).subscribe(
+      () => {
+        console.log('Order deleted successfully.');
+      },
+      error => {
+        console.error('Error deleting order:', error);
+      }
+    );
   }
 }

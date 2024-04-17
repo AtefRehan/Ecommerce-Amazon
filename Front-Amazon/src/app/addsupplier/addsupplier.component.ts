@@ -23,6 +23,7 @@ export class AddsupplierComponent {
     this.http.post<any>('http://localhost:5189/api/Supplier', this.supplier)
       .subscribe(
         (response) => {
+          alert("Supplier Add Successfuly")
           console.log('Supplier added successfully:', response);
 
         },

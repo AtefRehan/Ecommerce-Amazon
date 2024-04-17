@@ -15,7 +15,7 @@
     <label for="phoneNumber">Phone Number:</label>
     <input type="text" id="phoneNumber" name="phoneNumber" [(ngModel)]="supplier.phoneNumber" required>
   </div>
-  <button type="submit" class="submit-button">Add Supplier</button>
+  <button type="submit" [disabled]="!supplier.phoneNumber" class="submit-button">Add Supplier</button>
 </form>
 <div>
   <input type="number" [(ngModel)]="supplierIdToDelete" placeholder="Enter supplier ID" class="border border-gray-300 rounded-lg px-4 py-2 w-1/2">
