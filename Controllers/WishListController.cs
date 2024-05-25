@@ -67,6 +67,16 @@ namespace Ecommerce_Amazon.Controllers
             }
             return BadRequest();
         }
+    //     [HttpDelete]
+    //     public ActionResult Delete(int productId, string userID)
+    //     {
+    //         if(productId != null && userID!= null)
+    //         {
+    //             wish.RemoveProduct(productId, userID);
+    //             return Ok();
+    //         }
+    //         return BadRequest();
+    //     }
     }
     
 }
